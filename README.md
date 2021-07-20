@@ -16,7 +16,7 @@
 pip install -r requirements.txt
 ```
 
-- 若需要使用Mish激活函数且在GPU上运行，需先安装mish-cuda：https://github.com/thomasbrandon/mish-cuda（否则需要修改detection部分有关代码才能正常使用Mish）
+- 若需要使用Mish激活函数且在GPU上运行，需先安装mish-cuda（否则需要修改detection部分有关代码才能正常使用Mish）：https://github.com/thomasbrandon/mish-cuda
 
 
 
