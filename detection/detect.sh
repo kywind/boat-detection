@@ -1,0 +1,1 @@
+python detect.py --save-txt --conf 0.1 --img 608 --output inference/2018 --source detect_buffer_jpg_2018/ --cfg cfg/satellite-anchor.cfg --name cfg/satellite.names --weights runs/exp24_0706origanchor300resume/weights/best_0706origanchor300resume.pt

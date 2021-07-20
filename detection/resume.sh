@@ -1,0 +1,1 @@
+python train.py --device 1 --batch-size 16 --img 608 608 --data cfg/satellite.data.yaml --cfg cfg/satellite-anchor.cfg --hyp cfg/hyp.scratch.yaml --resume --weights runs/exp20_0706origanchor250resume/weights/249.pt --name 0706origanchor300resume --single-cls --epochs 300

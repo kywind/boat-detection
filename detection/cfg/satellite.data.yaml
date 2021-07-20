@@ -1,0 +1,7 @@
+nc: 1
+train: imglist/train.txt
+val: imglist/val.txt
+test: imglist/test.txt
+
+names: ['1']
+
