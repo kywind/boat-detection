@@ -24,6 +24,8 @@ requirements.txt
 # mish-cuda/
 detection/cache/
 
+detection/preprocess_detect_orig.py
+
 detection/runs/*
 detection/annotations/*
 detection/images/*
