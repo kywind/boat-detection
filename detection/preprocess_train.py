@@ -10,9 +10,9 @@ trainval_percent = 0.9
 train_percent = 0.9
 width, height = 608, 608
 
-g_root_path = './' 
+g_root_path = './'
 xmlpath = 'annotations/'
-imgpath = 'images/' 
+imgpath = 'images/'
 txtpath = 'imglist/'
 labelpath = 'labels/'
 
@@ -37,12 +37,15 @@ def convert_annotation(image_id):
     tree=ET.parse(in_file)
     root = tree.getroot()
     w, h = width, height
+    n = 0
     for obj in root.iter('object'):
+        n += 1
         cls_id = 0
         xmlbox = obj.find('bndbox')
         b = (float(xmlbox.find('xmin').text), float(xmlbox.find('xmax').text), float(xmlbox.find('ymin').text), float(xmlbox.find('ymax').text))
         bb = convert((w,h), b)
         out_file.write(str(cls_id) + ' ' + ' '.join([str(a) for a in bb]) + '\n')
+    return n
         
 
 os.chdir(g_root_path)
@@ -87,7 +90,9 @@ for image_set in sets:
     fimg = open(txtpath + './{}.txt'.format(image_set))
     image_paths = fimg.read().strip().split()
     fimg.close()
+    cnt = 0
     for image_path in image_paths:
         image_id = image_path.replace(imgpath, '')
         image_id = image_id.replace(imgtype, '')
-        convert_annotation(image_id)
+        cnt += convert_annotation(image_id)
+    print(cnt)

@@ -1,1 +1,1 @@
-python train.py --device 2 --batch-size 4 --img 608 608 --data cfg/satellite.data.yaml --cfg cfg/satellite-anchor.cfg --hyp cfg/hyp.scratch.yaml --weights weights/yolov4.conv.137 --name 0706origanchor50 --single-cls --epochs 50
+python train.py --device 1 --batch-size 32 --img 608 608 --data cfg/satellite.data.yaml --cfg cfg/satellite-anchor.cfg --hyp cfg/hyp.scratch.yaml --weights weights/yolov4.conv.137 --name test-allanno-old-100 --single-cls --epochs 100

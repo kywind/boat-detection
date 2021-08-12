@@ -1,11 +1,10 @@
 # Yangon Chickenfish
 
-***V2版本使用说明施工中***
 
 本项目是一个基于YOLOv4的卫星图像目标体识别与集群检测模型。目前应用于检测分析缅甸仰光周边鸡舍+鱼塘养殖模式的发展情况，同时也可以迁移至其他目标检测场景。
 
 - 参考的PyTorch+YOLOv4实现：https://github.com/WongKinYiu/PyTorch_YOLOv4
-- 下载训练数据（***V1***）（将images，annotations，labels三个文件夹分别放入detection目录）：https://pan.baidu.com/s/1Pa_Yv9ozAoSmdu5IhJ_u1w 提取码：ztmj
+- 下载训练数据（将images，annotations，labels，imglist四个文件夹分别放入detection目录）：https://pan.baidu.com/s/1Pa_Yv9ozAoSmdu5IhJ_u1w 提取码：ztmj
 - 下载预训练模型（***V1***）：https://pan.baidu.com/s/1hz3vQF-WoDfvsFNb7k7BHQ 提取码：93ur
 
 
@@ -26,7 +25,7 @@ pip install -r requirements.txt
 
 ### 2.1 数据准备
 
-确保images，annotations，labels，imglist下存在训练数据而且imglist目录下的txt文件中记录的文件名与images和labels中的文件名一致；如果是新的未分割的数据集（imglist下没有数据）或者需要 ***重新随机化分割训练数据***，运行preprocess_train.py。
+确保images，annotations，labels，imglist下存在训练数据而且imglist目录下的txt文件中记录的文件名与images和labels中的文件名一致；如果是新的未分割的数据集（imglist下没有数据）或者需要 ***重新随机分割训练数据***，运行preprocess_train.py。
 
 ### 2.2 训练
 

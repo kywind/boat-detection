@@ -7,6 +7,7 @@
 
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
+requirements.txt
 
 *.pt
 *.weights
@@ -15,9 +16,13 @@
 *.jpg
 *.tif
 
-kmeans-anchor-boxes/
-mish-cuda/
-PyTorch_YOLOv4/
+*.txt
+*.xml
+!*/cluster/utils/*.txt
+
+# kmeans-anchor-boxes/
+# mish-cuda/
+detection/cache/
 
 detection/runs/*
 detection/annotations/*
@@ -25,6 +30,6 @@ detection/images/*
 detection/labels/*
 
 cluster/old/
-cluster/raw/*
-cluster/result/*
+# cluster/raw/*
+# cluster/result/*
 
