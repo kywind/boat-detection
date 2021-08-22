@@ -30,6 +30,9 @@ detection/runs/*
 detection/annotations/*
 detection/images/*
 detection/labels/*
+detection/data*
+detection/detect_buffer*
+detection/visualize*
 
 cluster/old/
 # cluster/raw/*

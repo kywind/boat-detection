@@ -94,7 +94,8 @@ def test(data,  # NOTE: this initial configuration set is used for train.py call
     if not training:
         img = torch.zeros((1, 3, imgsz, imgsz), device=device)  # init img
         _ = model(img.half() if half else img) if device.type != 'cpu' else None  # run once
-        path = data['test'] if opt.task == 'test' else data['val']  # path to val/test images
+        # path = data['test'] if opt.task == 'test' else data['val']  # path to val/test images
+        path = data[opt.task]
         dataloader = create_dataloader(path, imgsz, batch_size, 32, opt,
                                        hyp=None, augment=False, cache=False, pad=0.5, rect=True)[0]
 
@@ -303,7 +304,21 @@ if __name__ == '__main__':
     opt.data = check_file(opt.data)  # check file
     print(opt)
 
-    if opt.task in ['val', 'test']:  # run normally
+    if opt.task == 'study':  # run over a range of settings and save/plot
+        for weights in ['']:
+            f = 'study_%s_%s.txt' % (Path(opt.data).stem, Path(weights).stem)  # filename to save to
+            x = list(range(352, 832, 64))  # x axis
+            y = []  # y axis
+            for i in x:  # img-size
+                print('\nRunning %s point %s...' % (f, i))
+                r, _, t = test(opt.data, weights, opt.batch_size, i, opt.conf_thres, opt.iou_thres, opt.save_json)
+                y.append(r + t)  # results and times
+            np.savetxt(f, y, fmt='%10.4g')  # save
+        os.system('zip -r study.zip study_*.txt')
+        # plot_study_txt(f, x)  # plot
+
+    # if opt.task in ['val', 'test']:  # run normally
+    else:
         test(opt.data,
              opt.weights,
              opt.batch_size,
@@ -316,16 +331,3 @@ if __name__ == '__main__':
              opt.single_cls,
              opt.augment,
              opt.verbose)
-
-    elif opt.task == 'study':  # run over a range of settings and save/plot
-        for weights in ['']:
-            f = 'study_%s_%s.txt' % (Path(opt.data).stem, Path(weights).stem)  # filename to save to
-            x = list(range(352, 832, 64))  # x axis
-            y = []  # y axis
-            for i in x:  # img-size
-                print('\nRunning %s point %s...' % (f, i))
-                r, _, t = test(opt.data, weights, opt.batch_size, i, opt.conf_thres, opt.iou_thres, opt.save_json)
-                y.append(r + t)  # results and times
-            np.savetxt(f, y, fmt='%10.4g')  # save
-        os.system('zip -r study.zip study_*.txt')
-        # plot_study_txt(f, x)  # plot

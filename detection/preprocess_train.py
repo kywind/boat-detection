@@ -6,7 +6,7 @@ import random
 
 imgtype = '.jpg'
 sets = ['train','val','test','trainval']
-trainval_percent = 0.9 
+trainval_percent = 1 
 train_percent = 0.9
 width, height = 608, 608
 

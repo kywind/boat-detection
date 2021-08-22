@@ -294,14 +294,14 @@ def train(hyp, opt, device, tb_writer=None):
                 ema.update_attr(model)
             final_epoch = epoch + 1 == epochs
             if not opt.notest or final_epoch:  # Calculate mAP
-                results, maps, times = test.test(opt.data,
-                                                 batch_size=batch_size,
-                                                 imgsz=imgsz,
-                                                 save_json=False,
-                                                 model=ema.ema.module if hasattr(ema.ema, 'module') else ema.ema,
-                                                 single_cls=opt.single_cls,
-                                                 dataloader=dataloader,
-                                                 save_dir=log_dir)
+                # results, maps, times = test.test(opt.data,
+                #                                  batch_size=batch_size,
+                #                                  imgsz=imgsz,
+                #                                  save_json=False,
+                #                                  model=ema.ema.module if hasattr(ema.ema, 'module') else ema.ema,
+                #                                  single_cls=opt.single_cls,
+                #                                  dataloader=dataloader,
+                #                                  save_dir=log_dir)
                 results, maps, times = test.test(opt.data,
                                                  batch_size=batch_size,
                                                  imgsz=imgsz_test,

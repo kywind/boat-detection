@@ -122,13 +122,13 @@ def getmap(box, year, ratio=1, res=None):  # get satellite map for any rectangle
     return res
 
 
-def mapcut_single(year, taskname=None):  # random pick any number of single targets and generate mapcut of any fixed size (e.g. 100x100)
+def mapcut_single(year, taskname=None, num=None):  # random pick any number of single targets and generate mapcut of any fixed size (e.g. 100x100)
     if taskname is None:
         taskname = year
     filename = './data/{}.txt'.format(taskname)
     savepath = './result/{}_single/'.format(taskname)
     # num = 50
-    num = None
+    # num = None
     w, h = 100, 100
     w, h = w/111000, h/111000
 
@@ -483,9 +483,12 @@ def heatmap_region(year, single=True, cluster=True):  # get heatmap in specific 
 
             
 if __name__ == '__main__':     
-    box = (95., 16., 97., 18.)
-    years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
+    # box = (95., 16., 97., 18.)
+    # years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
     # comparison(years)
-    for year in years:
-        mapcut_single(year)
+    # for year in years:
+    #     mapcut_single(year)
+
+    year = 2010
+    
         

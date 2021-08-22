@@ -20,13 +20,13 @@ def intersection_over_union(boxA, boxB):
     return iou
 
 
-years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
-conf_thres = 0.37
+tasknames = ['2010_conf002', '2010_conf0', '2010_conf01']
+conf_thres = 0.18
 
-for year in years:
+for taskname in tasknames:
     tfw_dir = '../utils/tfw.txt'
-    out_dir = '../data/{}.txt'.format(year)
-    path = '{}/'.format(year)
+    out_dir = '../data/{}.txt'.format(taskname)
+    path = '{}/'.format(taskname)
     
     f_tfw = open(tfw_dir, 'r')
     tfw = f_tfw.read().strip().split('\n')
@@ -81,7 +81,7 @@ for year in years:
                 for (fnbox, box) in total:
                     if fnbox == fn0:
                         iou = intersection_over_union(box, (xA, yA, xB, yB)) 
-                        if iou > 0.2:
+                        if iou > 0.9:
                             hit += 1
                             break
                 else:
@@ -89,7 +89,7 @@ for year in years:
                     count += 1
         F.close()
 
-    print(year, count, hit)
+    print(taskname, count, hit)
 
     out_list = []
 

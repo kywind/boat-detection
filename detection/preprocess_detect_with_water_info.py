@@ -51,24 +51,20 @@ def get_water(img):
         # img = cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
         # gray_img = cv2.rectangle(gray_img, (x,y), (x+w,y+h), (0,255,0), 2)
         # cv2.imwrite(vis_path+fn+'_gray.jpg', gray_img)
-        return True, img
-    return False, img
+        return img
+    return None
 
 
 years = (2010,)
 for year in years:
-    orig_jpg_path = '/home/mist/rawimages/yangon_{}/'.format(year)
+    orig_jpg_path = '/mnt/zkf/rawimages/yangon_{}/'.format(year)
     new_jpg_path = 'detect_buffer_jpg_{}/'.format(year)
-    new_jpg_path_nowater = 'detect_buffer_jpg_{}_nowater/'.format(year)
     # orig_xml_path = '/mnt/2018/2018_xml_in_cluster/'
     # new_xml_path = 'detect_buffer_annotation/'
     
     if os.path.exists(new_jpg_path):
         shutil.rmtree(new_jpg_path)
     os.mkdir(new_jpg_path)
-    if os.path.exists(new_jpg_path_nowater):
-        shutil.rmtree(new_jpg_path_nowater)
-    os.mkdir(new_jpg_path_nowater)
     
     # if year == 2018:
     #     if os.path.exists(new_xml_path):
@@ -78,7 +74,7 @@ for year in years:
     filenames = [f[:-4] for f in os.listdir(orig_jpg_path) if f.endswith('.tif')]
     random.shuffle(filenames)
     # has_label = (year == 2018)
-    water_detect = True
+    water_detect = False
 
     h = 608
     w = 608
@@ -134,15 +130,11 @@ for year in years:
 
                 img = jpg[jmin:jmax, imin:imax, :]
                 if water_detect:
-                    flag, img = get_water(img)
+                    img = get_water(img)
                     
-                if flag:
+                if img is not None:
                     cnt += 1
                     fn = '{}{}_{}_{}.jpg'.format(new_jpg_path,f,imin,jmin)
-                    cv2.imwrite(fn, img)
-                
-                else:
-                    fn = '{}{}_{}_{}.jpg'.format(new_jpg_path_nowater,f,imin,jmin)
                     cv2.imwrite(fn, img)
                     
                     # if has_label and exists_label:         
