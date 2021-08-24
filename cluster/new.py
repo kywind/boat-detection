@@ -85,9 +85,8 @@ def detect(year):
 
 def main():
     years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
-    # years = (2010,)
     for year in years:
-        detect(year)  # 在result目录下生成集群的检测结果
+        detect(year)
         mapcut_single(year)  
     comparison(years)
 

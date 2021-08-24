@@ -78,7 +78,7 @@ def getmap(box, year, ratio=1, res=None):  # get satellite map for any rectangle
     channel = 3
     img_type = '.tif'
     img_size_bound = (6000,4000)
-    map_path = '/home/mist/rawimages/yangon_{}/'.format(year)
+    map_path = '/mnt/zkf/rawimages/yangon_{}/'.format(year)
     tfw_path = './utils/tfw.txt'
     resolution = 0.0000107288 * ratio if not res else res
         
@@ -267,7 +267,7 @@ def mapcut_cluster(year, taskname=None):  # generate mapcut of clusters with ori
             
         
 def comparison(years, tasknames=None, thres=5, res=0.0000107288):  # get mapcut for clusters and compare between years
-    if tasknames is None:
+    if tasknames = None:
         tasknames = years
     hull_all = []
     for (year, taskname) in zip(years, tasknames):
@@ -489,5 +489,4 @@ def heatmap_region(year, taskname=None, maprange=None, single=True, cluster=True
         cv2.imwrite('cluster_{}_{}_{}_{}_{}.jpg'.format(taskname, x_min, y_min, x_max, y_max), bg)
 
     
-if __name__ == '__main__':
-    mapcut_single(2010, '2010_nowater')
+        

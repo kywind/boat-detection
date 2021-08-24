@@ -16,16 +16,18 @@ def intersection_over_union(boxA, boxB):
     boxBArea = (boxB[2] - boxB[0]) * (boxB[3] - boxB[1])
     if boxAArea * boxBArea == 0:
         return 0
-    iou = interArea / float(boxAArea + boxBArea - interArea)
+    # iou = interArea / float(boxAArea + boxBArea - interArea)
+    iou = interArea / float(min(boxAArea, boxBArea))
     return iou
 
 
-tasknames = ['2010_conf002', '2010_conf0', '2010_conf01']
+# tasknames = ['2010_conf002', '2010_conf0', '2010_conf01']
+tasknames = ['2010_nowater']
 conf_thres = 0.18
-
+iou_thres = 0.55
 for taskname in tasknames:
     tfw_dir = '../utils/tfw.txt'
-    out_dir = '../data/{}.txt'.format(taskname)
+    out_dir = '../data/{}_iou_{}.txt'.format(taskname, iou_thres)
     path = '{}/'.format(taskname)
     
     f_tfw = open(tfw_dir, 'r')
@@ -81,7 +83,7 @@ for taskname in tasknames:
                 for (fnbox, box) in total:
                     if fnbox == fn0:
                         iou = intersection_over_union(box, (xA, yA, xB, yB)) 
-                        if iou > 0.9:
+                        if iou > iou_thres:
                             hit += 1
                             break
                 else:
