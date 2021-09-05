@@ -7,7 +7,7 @@ from kmeans import kmeans, avg_iou
 
 ANNOTATIONS_PATH = "../annotations"
 CLUSTERS = 9
-SIZE = 608
+SIZE = 640
 
 def load_dataset(path):
 	dataset = []

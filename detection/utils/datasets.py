@@ -80,7 +80,10 @@ class LoadImages:  # for inference
         elif os.path.isdir(p):
             files = sorted(glob.glob(os.path.join(p, '*.*')))  # dir
         elif os.path.isfile(p):
-            files = [p]  # files
+            # files = [p]  # files
+            f = open(p)
+            files = f.read().strip().split('\n')
+            f.close()
         else:
             raise Exception('ERROR: %s does not exist' % p)
 

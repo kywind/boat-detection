@@ -8,7 +8,7 @@ imgtype = '.jpg'
 sets = ['train','val','test','trainval']
 trainval_percent = 1 
 train_percent = 0.9
-width, height = 608, 608
+width, height = 640, 640
 
 g_root_path = './'
 xmlpath = 'annotations/'
