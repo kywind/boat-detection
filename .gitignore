@@ -33,8 +33,11 @@ detection/labels/*
 detection/data*
 detection/detect_buffer*
 detection/visualize*
+detection/old/
 
 cluster/old/
-# cluster/raw/*
-# cluster/result/*
+cluster/raw/*
+cluster/result/*
+
+!cluster/raw/process_new.py
 

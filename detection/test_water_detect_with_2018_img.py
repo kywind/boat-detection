@@ -39,8 +39,11 @@ cnt_obj = 0
 cnt_obj_border = 0
 cnt_fn = 0  # how many objects are there in image cuts identified as no-water
 cnt_fn_border = 0
-    
-for f in tqdm(filenames):
+
+os.makedirs('visualize_nowater/', exist_ok=True)
+tbar = tqdm(filenames)
+for f in tbar:
+    tbar.set_description('cnt_water: {}, cnt_all: {}'.format(cnt_water, cnt_all))
     orig_jpg = orig_jpg_path + f + '.tif'
     jpg = cv2.imread(orig_jpg)
     
@@ -87,12 +90,15 @@ for f in tqdm(filenames):
             cnt_all += 1
             imin, imax, jmin, jmax = xrange[i][0], xrange[i][1], yrange[j][0], yrange[j][1]
             img = jpg[jmin:jmax, imin:imax, :]
-            if get_water(img) is None:  # no water, possible false negative
+            has_water, gray_img = get_water(img)
+            if has_water is None:  # no water, possible false negative
                 for k in range(len(xmin)):
                     box1 = (xmin[k], ymin[k], xmax[k], ymax[k])
                     box2 = (imin, jmin, imax, jmax)
                     inter = intersect(box1, box2)
                     if inter:
+                        cv2.imwrite('visualize_nowater/{}_{}_{}_gray.jpg'.format(f, imin, jmin), gray_img)
+                        cv2.imwrite('visualize_nowater/{}_{}_{}.jpg'.format(f, imin, jmin), img)
                         cnt_obj += 1
                         cnt_fn += 1
                         if not (xmin[k] >= imin and xmax[k] < imax and ymin[k] >= jmin and ymax[k] < jmax):

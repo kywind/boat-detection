@@ -46,7 +46,9 @@ for year in years:
     cnt_all = 0
     start_time = time.time()
     
-    for f in tqdm(filenames):
+    tbar = tqdm(filenames)
+    for f in tbar:
+        tbar.set_description('cnt_water: {}, cnt_all: {}'.format(cnt, cnt_all))
         orig_jpg = orig_jpg_path + f + '.tif'
         jpg = cv2.imread(orig_jpg)
         
@@ -93,9 +95,9 @@ for year in years:
 
                 img = jpg[jmin:jmax, imin:imax, :]
                 if water_detect:
-                    flag = get_water(img)
+                    flag, _ = get_water(img)
                     
-                if flag:
+                if flag is not None:
                     cnt += 1
                     fn = '{}{}_{}_{}.jpg'.format(new_jpg_path,f,imin,jmin)
                     cv2.imwrite(fn, img)
