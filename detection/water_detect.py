@@ -42,9 +42,8 @@ def get_water(img):
     contours.sort(key = cv2.contourArea, reverse=True)
     bounding_boxes = [cv2.boundingRect(cnt) for cnt in contours]
 
-    vis_path = 'visualize_water/'
-    os.makedirs(vis_path, exist_ok=True)
-    
+    # vis_path = 'visualize_water/'
+    # os.makedirs(vis_path, exist_ok=True)
     # print(cv2.contourArea(contours[0]), cv2.contourArea(contours[1]), cv2.contourArea(contours[2]))
 
     # return None 
@@ -54,15 +53,14 @@ def get_water(img):
         length = cv2.arcLength(contour, True)
         if w*h < thres_min*thres_min or w*h > thres_max*thres_max or w*h/area > 3 or area/(length*length)<0.01:
             continue
-        img = cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
-        gray_img = cv2.cvtColor(gray_img, cv2.COLOR_GRAY2BGR)
-        gray_img = cv2.rectangle(gray_img, (x,y), (x+w,y+h), (0,255,0), 2)
-        img_save = cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
-        img_save = cv2.drawContours(img_save, contours, idx, (0,0,255), 1)  
+        # img = cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
+        # gray_img = cv2.cvtColor(gray_img, cv2.COLOR_GRAY2BGR)
+        # gray_img = cv2.rectangle(gray_img, (x,y), (x+w,y+h), (0,255,0), 2)
+        # img_save = cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
+        # img_save = cv2.drawContours(img_save, contours, idx, (0,0,255), 1)  
 
-        fn = time.strftime("%m-%d-%H-%M-%S", time.localtime())
-        cv2.imwrite(vis_path + fn + '.jpg', img_save)
-        cv2.imwrite(vis_path + fn + '_gray.jpg', gray_img)
-        return img, gray_img
-
-    return None, gray_img
+        # fn = time.strftime("%m-%d-%H-%M-%S", time.localtime())
+        # cv2.imwrite(vis_path + fn + '.jpg', img_save)
+        # cv2.imwrite(vis_path + fn + '_gray.jpg', gray_img)
+        return True
+    return False

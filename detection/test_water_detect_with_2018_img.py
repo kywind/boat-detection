@@ -90,15 +90,15 @@ for f in tbar:
             cnt_all += 1
             imin, imax, jmin, jmax = xrange[i][0], xrange[i][1], yrange[j][0], yrange[j][1]
             img = jpg[jmin:jmax, imin:imax, :]
-            has_water, gray_img = get_water(img)
+            has_water = get_water(img)
             if has_water is None:  # no water, possible false negative
                 for k in range(len(xmin)):
                     box1 = (xmin[k], ymin[k], xmax[k], ymax[k])
                     box2 = (imin, jmin, imax, jmax)
                     inter = intersect(box1, box2)
                     if inter:
-                        cv2.imwrite('visualize_nowater/{}_{}_{}_gray.jpg'.format(f, imin, jmin), gray_img)
-                        cv2.imwrite('visualize_nowater/{}_{}_{}.jpg'.format(f, imin, jmin), img)
+                        # cv2.imwrite('visualize_nowater/{}_{}_{}_gray.jpg'.format(f, imin, jmin), gray_img)
+                        # cv2.imwrite('visualize_nowater/{}_{}_{}.jpg'.format(f, imin, jmin), img)
                         cnt_obj += 1
                         cnt_fn += 1
                         if not (xmin[k] >= imin and xmax[k] < imax and ymin[k] >= jmin and ymax[k] < jmax):

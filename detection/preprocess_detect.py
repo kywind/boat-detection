@@ -14,13 +14,16 @@ from water_detect import get_water
 # os.mkdir(vis_path)
 
 
-years = (2010,)
+years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
 for year in years:
     orig_jpg_path = '/home/mist/rawimages/yangon_{}/'.format(year)
     new_jpg_path = 'detect_buffer_jpg_{}/'.format(year)
     new_jpg_path_nowater = 'detect_buffer_jpg_{}_nowater/'.format(year)
     # orig_xml_path = '/mnt/2018/2018_xml_in_cluster/'
     # new_xml_path = 'detect_buffer_annotation/'
+
+    if not os.path.exists(orig_jpg_path):
+        orig_jpg_path = '/home/mist/rawimages/new_{}/'.format(year)
     
     if os.path.exists(new_jpg_path):
         shutil.rmtree(new_jpg_path)
@@ -95,9 +98,9 @@ for year in years:
 
                 img = jpg[jmin:jmax, imin:imax, :]
                 if water_detect:
-                    flag, _ = get_water(img)
+                    flag = get_water(img)
                     
-                if flag is not None:
+                if flag:
                     cnt += 1
                     fn = '{}{}_{}_{}.jpg'.format(new_jpg_path,f,imin,jmin)
                     cv2.imwrite(fn, img)

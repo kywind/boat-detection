@@ -84,10 +84,11 @@ def detect(year):
     
 
 def main():
-    years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
+    years = (2001, 2002, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018, 2019, 2020)
     for year in years:
         detect(year)
         mapcut_single(year)  
+        mapcut_cluster(year)
     comparison(years)
 
 
