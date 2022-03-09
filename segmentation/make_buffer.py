@@ -99,7 +99,7 @@ def make_water_buffer():
     years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018]
     for year in years:
         filename = '../cluster_rect/data/{}.txt'.format(year)
-        outdir = '../detect_buffer_water_{}/'.format(year)
+        outdir = 'detect_buffer_water_{}/'.format(year)
         os.makedirs(outdir, exist_ok=True)
 
         w, h = 500, 500
@@ -125,7 +125,7 @@ def make_water_buffer():
             # img = cv2.rectangle(img, (mid_x-delta_x, mid_y-delta_y), (mid_x+delta_x, mid_y+delta_y), (0, 0, 255), 1)
             cv2.imwrite(outdir + '{}.jpg'.format(cnt), img)
             f = open(outdir + '{}.txt'.format(cnt), 'w')
-            f.write('{} {} {} {}'.format(xmin, ymin, xmax, ymax))
+            f.write('{} {} {} {}\n'.format(xmin, ymin, xmax, ymax))
             for j in aux:
                 xmin2, ymin2, xmax2, ymax2 = data[j].split()
                 xmin2, ymin2, xmax2, ymax2 = eval(xmin2), eval(ymin2), eval(xmax2), eval(ymax2)
@@ -135,7 +135,7 @@ def make_water_buffer():
                     ymid2 = (ymin2+ymax2)/2
                     x2 = int((xmid2-box[0])/res)
                     y2 = int((box[3]-ymid2)/res)
-                    f.write('{} {} {}'.format(j, x2, y2))
+                    f.write('{} {} {}\n'.format(j, x2, y2))
             f.close()
             cnt += 1
 
