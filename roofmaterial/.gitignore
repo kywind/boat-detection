@@ -1,0 +1,13 @@
+color_histogram/result/
+color_histogram/label_zinc/
+
+color_after_canny/
+
+canny_edge/grad_*
+
+label_zinc/
+res/
+res_new/
+
+img_level18/
+result/

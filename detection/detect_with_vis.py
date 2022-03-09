@@ -21,6 +21,10 @@ from models.experimental import *
 from utils.datasets import *
 from utils.general import *
 
+
+VIS_PATH = 'vis_temp/'
+CONF_THRESH = 0.18
+
 def load_classes(path):
     # Loads *.names file at 'path'
     with open(path, 'r') as f:
@@ -33,6 +37,9 @@ def detect(save_img=False):
     # webcam = source == '0' or source.startswith('rtsp') or source.startswith('http') or source.endswith('.txt')
     webcam = False
 
+    save_img = True  #####################################
+    cnt = 0
+    
     # Initialize
     device = select_device(opt.device)
     if os.path.exists(out):
@@ -98,7 +105,7 @@ def detect(save_img=False):
             pred = apply_classifier(pred, modelc, img, im0s)
 
         # Process detections
-        flag = 0
+        flag = 0  ######################################
         for i, det in enumerate(pred):  # detections per image
             if webcam:  # batch_size >= 1
                 p, s, im0 = path[i], '%g: ' % i, im0s[i].copy()
@@ -120,17 +127,16 @@ def detect(save_img=False):
 
                 # Write results
                 for *xyxy, conf, cls in det:
-                    if conf < 0.18:
+                    if conf < CONF_THRESH:  ######################################
                         continue
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         with open(txt_path + '.txt', 'a') as f:
                             f.write(('%g ' * 6 + '\n') % (cls, *xywh, conf))  # label format
-
                     if save_img or view_img:  # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
                         plot_one_box(xyxy, im0, label=None, color=colors[int(cls)], line_thickness=1)
-                        flag = 1
+                        flag = 1  #######################################
 
             # Print time (inference + NMS)
             print('%sDone. (%.3fs)' % (s, t2 - t1))
@@ -142,9 +148,10 @@ def detect(save_img=False):
                     raise StopIteration
 
             # Save results (image with detections)
-            if save_img and flag:  # flag: has prediction
+            if save_img and flag:  # flag: has prediction  ###########################################
                 if dataset.mode == 'images':
-                    cv2.imwrite(save_path, im0)
+                    cv2.imwrite(VIS_PATH + '{}.jpg'.format(cnt), im0)
+                    cnt += 1
                 else:
                     if vid_path != save_path:  # new video
                         vid_path = save_path
