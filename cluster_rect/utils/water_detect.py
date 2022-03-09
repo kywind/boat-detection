@@ -5,7 +5,6 @@ import time
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import jit
 from scipy import spatial
 import shutil
 from scipy.optimize import curve_fit
