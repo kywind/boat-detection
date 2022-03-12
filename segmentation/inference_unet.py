@@ -55,7 +55,7 @@ def main():
                        'shuffle': False}
         test_kwargs.update(cuda_kwargs)
     
-    for year in [2010, 2011, 2012, 2013, 2014, 2015, 2016]:
+    for year in [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018]:
         if args.task == 'water':
             test_dataset = InfDataset_water('detect_buffer_water_{}/'.format(year))
             args.num_classes = 2

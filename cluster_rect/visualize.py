@@ -107,11 +107,15 @@ def getmap(box, year, ratio=1, res=None):  # get satellite map for any rectangle
             ii, jj = np.meshgrid(i_list, j_list)
             ii = ii.reshape(-1)
             jj = jj.reshape(-1)
+            deltax = x0 - x_min
+            deltay = y0 - y_min
 
             for t in range(ii.shape[0]):
                 i, j = ii[t], jj[t]
-                h = int((y0 + j * ystep - y_min) // resolution)
-                w = int((x0 + i * xstep - x_min) // resolution)
+                h = int((deltay + j * ystep) // resolution)
+                w = int((deltax + i * xstep) // resolution)
+                if h >= res.shape[0] or w >= res.shape[1]:
+                    continue 
                 res[h][w] = img[j][i]
                 # res[h][w] = np.array([255,255,255])
     res = cv2.flip(res, 0)
@@ -148,7 +152,7 @@ def mapcut_single(year, taskname=None, num=None):  # random pick any number of s
             box = (x - w/2, y - h/2, x + w/2, y + h/2)
             delta_x = int((xmax - x) / 0.0000107288)
             delta_y = int((ymax - y) / 0.0000107288)
-            assert(delta_x > 0 and delta_y > 0)
+            # (delta_x > 0 and delta_y > 0)
             img = getmap(box, year)
             mid_x = int(img.shape[0] / 2)
             mid_y = int(img.shape[1] / 2)

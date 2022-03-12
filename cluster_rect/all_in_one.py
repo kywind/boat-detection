@@ -97,5 +97,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    mapcut_single(2018)
+    # detect(2018)
+    # mapcut_cluster(2018)
 

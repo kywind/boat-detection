@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 
 # for each instance
-for year in [2010, 2011, 2012, 2013, 2014, 2015, 2016]:
+for year in [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018]:
     roof_in_path = 'inference_roof_{}/'.format(year)
     water_in_path = 'inference_water_{}/'.format(year)
     water_meta_path = 'detect_buffer_water_{}/'.format(year)
@@ -56,7 +56,7 @@ for year in [2010, 2011, 2012, 2013, 2014, 2015, 2016]:
         water_mask = cv2.dilate(water_mask, kernel) 
         # cv2.imwrite('temp.jpg', water_mask * 255)
         water_bin = 255 * (water_mask != 0)
-
+        # print(water_bin.shape)  # 448, 448
         contours, _ = cv2.findContours(water_bin.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         water_area = 0
         center_cont = None
@@ -78,21 +78,35 @@ for year in [2010, 2011, 2012, 2013, 2014, 2015, 2016]:
         xmin, ymin, xmax, ymax = eval(center_pos[0]), eval(center_pos[1]), eval(center_pos[2]), eval(center_pos[3])
         x_mid, y_mid = (xmin + xmax) / 2, (ymin + ymax) / 2
         adjacents = []
-        for i in range(1, len(water_meta)):
-            adj = water_meta[i].split()
-            adj_id, adj_x, adj_y = eval(adj[0]), eval(adj[1]), eval(adj[2])
-            # print(center_cont, adj_id, file_id)
-            if center_cont is not None and adj_id != file_id:
-                dist = cv2.pointPolygonTest(cont, (adj_x, adj_y), False)
-                if dist >= 0: # inside or on border
-                    adjacents.append(adj_id)
-        if len(adjacents) == 0:
+
+        if center_cont is None:
             adjacents_str = 'none'
+
         else:
-            adjacents_str = ''
-            for adj_id in adjacents:
-                adjacents_str += '{} '.format(adj_id)
-            adjacents_str = adjacents_str[:-1]
+            adjs = []
+            for i in range(1, len(water_meta)):
+                adj = water_meta[i].split()
+                adj_id, adj_x, adj_y = eval(adj[0]), eval(adj[1]), eval(adj[2])
+
+                if adj_id == file_id:
+                    x_shift, y_shift = x_center - adj_x, y_center - adj_y
+                
+                else: 
+                    adjs.append((adj_id, adj_x, adj_y))
+                
+            for idx, x, y in adjs:
+                dist = cv2.pointPolygonTest(cont, (x + x_shift, y + y_shift), False)
+                if dist >= 0: # inside or on border
+                    adjacents.append(idx)
+            
+            if len(adjacents) == 0:
+                adjacents_str = 'none'
+
+            else:
+                adjacents_str = ''
+                for adj_id in adjacents:
+                    adjacents_str += '{} '.format(adj_id)
+                adjacents_str = adjacents_str[:-1]
 
         # calculate water area for each roof & other roofs in the same water area
 
