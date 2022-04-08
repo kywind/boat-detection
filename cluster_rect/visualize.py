@@ -68,12 +68,19 @@ def intersect(box1, box2):  # judge if two boxes intersect
     return not (box1[2] < box2[0] or box1[0] > box2[2] or box1[3] < box2[1] or box1[1] > box2[3])
 
 
-def getmap(box, year, ratio=1, res=None):  # get satellite map for any rectangle (source needed)
+def getmap(box, year, ratio=1, res=None, level=17):  # get satellite map for any rectangle (source needed)
     channel = 3
     img_type = '.tif'
-    img_size_bound = (6000,4000)
-    map_path = '/data/zkf/rawimages/yangon_{}/'.format(year)
-    tfw_path = './utils/tfw.txt'
+    if level == 18:
+        img_size_bound = (12000,8000)
+        map_path = '/data/zkf/{}_level_18/'.format(year)
+        tfw_path = './utils/tfw_2018_level18.txt'
+    elif level == 17:
+        img_size_bound = (6000,4000)
+        map_path = '/data/zkf/rawimages/yangon_{}/'.format(year)
+        tfw_path = './utils/tfw.txt'
+    else:
+        raise NotImplementedError
     resolution = 0.0000107288 * ratio if not res else res
         
     ftfw = open(tfw_path, 'r')
@@ -93,11 +100,11 @@ def getmap(box, year, ratio=1, res=None):  # get satellite map for any rectangle
     for name in tfw_dict.keys():
         xstep, ystep, x0, y0 = tfw_dict[name]
         x1, y1 = x0 + img_size_bound[0] * xstep, y0 + img_size_bound[1] * ystep
-        if not os.path.exists(map_path + name + '_Level_17' + img_type):
+        if not os.path.exists(map_path + name + '_Level_{}'.format(level) + img_type):
             continue
         if intersect((x0,y1,x1,y0), box):
             print(name)
-            img = cv2.imread(map_path + name + '_Level_17' + img_type)
+            img = cv2.imread(map_path + name + '_Level_{}'.format(level) + img_type)
             if img is None:
                 continue
             i_list = [i for i in range(img.shape[1]) if x0 + i * xstep >= x_min and x0 + i * xstep < x_max and 
@@ -501,7 +508,9 @@ def heatmap_region(year, taskname=None, maprange=None, single=True, cluster=True
     
 if __name__ == '__main__':
     # mapcut_single(2010, '2010_nowater')
-    mapcut_single(2018)
+    # mapcut_single(2018)
     # for year in range(2020, 2021):
     #     img = getmap((95, 16, 97, 18), year, res=0.002)
     #     cv2.imwrite('{}.jpg'.format(year), img)
+    img = getmap((95, 16, 97, 18), 2018, res=0.001, level=18)
+    cv2.imwrite('2018_level18.jpg', img)

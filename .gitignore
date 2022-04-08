@@ -5,6 +5,7 @@ detect_buffer*
 label_data/
 level18/
 pytorch-semantic-segmentation/
+result_v3/
 
 *.zip
 *.jpg

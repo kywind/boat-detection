@@ -245,7 +245,7 @@ def ap_per_class(tp, conf, pred_cls, target_cls, pr_score):
         n_gt = (target_cls == c).sum()  # Number of ground truth objects
         n_p = i.sum()  # Number of predicted objects
 
-        if n_p == 0 or n_gt == 0:
+        if n_p <= 1 or n_gt <= 1:
             continue
         else:
             # Accumulate FPs and TPs
@@ -518,6 +518,7 @@ def build_targets(p, targets, model):
     for i, jj in enumerate(model.module.yolo_layers if multi_gpu else model.yolo_layers):
         # get number of grid points and anchor vec for this yolo layer
         anchors = model.module.module_list[jj].anchor_vec if multi_gpu else model.module_list[jj].anchor_vec
+        anchors = anchors.to(targets.device)
         gain[2:] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain
 
         # Match targets to anchors

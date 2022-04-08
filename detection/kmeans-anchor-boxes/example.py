@@ -7,7 +7,7 @@ from kmeans import kmeans, avg_iou
 
 ANNOTATIONS_PATH = "../annotations"
 CLUSTERS = 9
-SIZE = 640
+SIZE = 608
 
 def load_dataset(path):
 	dataset = []
@@ -34,7 +34,13 @@ def load_dataset(path):
 data = load_dataset(ANNOTATIONS_PATH)
 out = kmeans(data, k=CLUSTERS)
 print("Accuracy: {:.2f}%".format(avg_iou(data, out) * 100))
-print("Boxes:\n {}".format(out * SIZE))
+print("Boxes:")
+for i in range(len(out)):
+	for j in range(len(out[0])):
+		print(int(out[i][j] * SIZE), end='')
+		print(',', end='')
+	print(' ', end='')	
+print('\n')
 
 ratios = np.around(out[:, 0] / out[:, 1], decimals=2).tolist()
 print("Ratios:\n {}".format(sorted(ratios)))
