@@ -9,7 +9,6 @@ import numpy as np
 import segmentation_models_pytorch as smp
 
 from dataset import *
-from model import Net
 from criterion import iou_pytorch, iou_numpy, FocalLoss
 
 SMOOTH = 1e-6

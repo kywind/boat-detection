@@ -5,7 +5,6 @@ import numpy as np
 import segmentation_models_pytorch as smp
 
 from dataset import *
-from model import Net
 
 SMOOTH = 1e-6
 

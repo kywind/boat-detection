@@ -46,80 +46,69 @@ pip install -r requirements.txt
 
 ### 3.1 数据准备
 
-- 裁剪为固定大小后的卫星图片：detection
-确保images，annotations，labels，imglist下存在训练数据而且imglist目录下的txt文件中记录的文件名与images和labels中的文件名一致；
+- src/detection/images: 裁剪为固定大小后的卫星图片
+- src/detection/annotations: 对应的json标注文件
 
-重新随机分割训练数据：
+预处理训练数据：
 ```
-python preprocess/preprocess_train.py
-```
-
-### 2.2 训练
-
-根据需要修改train.sh以及cfg目录下的参数，然后运行train.sh。训练后会在run目录下创建一个子目录，含有checkpoint和训练过程数据（可能需要使用tensorboard查看）。
-
-### 3.3 测试
-
-根据需要修改test.sh以及cfg目录下的参数，然后运行test.sh。测试指标包括在不同的iou_thresh（即区分正确预测和错误预测时，采用的预测框与标注框的IOU的阈值）下的P(precision)，R(recall)，mAP等。
-
-### 4.4 预测
-
-根据需要修改detect.sh以及cfg目录下的参数，然后运行detect.sh。预测将在inference目录下输出预测结果。
-
-
-
-## 4 集群检测
-
-集群检测模型位于cluster目录下。此后所有操作与指令均在cluster目录下进行。其中的很多代码可能只针对我们用到的卫星数据集，如果用到别的数据集，大概率需要修改这些代码。
-
-### 4.1 数据准备
-
-数据需要放至data目录下，格式为txt，内容格式如下：
-
-```
-x0 y0
-x1 x1
-x2 y2
+cd src/detection/;
+python preprocess/preprocess_train.py;
 ```
 
-即每行代表一个目标点的坐标。可以先在raw目录下进行预处理。可以参考raw/process_new.py。
+### 3.2 detection
+训练：
+```
+cd src/detection/;
+bash scripts/train.sh;
+```
 
-### 3.2 集群检测
+测试：
+```
+cd src/detection/;
+bash scripts/test.sh;
+```
 
-根据需要修改并运行detect.py（V2用的是new.py）。会在result目录下生成txt格式的集群检测结果。格式如下：
+预测：
+```
+cd src/detection/;
+python preprocess/preprocess_detect.py;
+bash scripts/detect.sh;
+```
 
+### 3.5 cluster detection
+detection的结果需先放至 src/cluster_detection/raw/ 目录下。
+```
+cd src/cluster_detection/;
+python nms.py;
+python detect.py;
+```
+
+输出格式：
 ```
 cluster 
-3 1 1 2 2
-1 1
-2 2
-1.5 1.5
+k xmin ymin xmax ymax
+xmin_1 ymin_1 xmax_1 ymax_1
+xmin_2 ymin_2 xmax_2 ymax_2
+...
+xmin_k ymin_k xmax_k ymax_k
 cluster
-4 3 4 5 6
-3 6
-5 4
-4.5 5
-4 5
+...
 ```
 
-解释：cluster表示此后内容为一个集群；下一行五个数分别为size xmin ymin xmax ymax，标记集群的大小和边界；然后其下size行是构成集群的所有目标的坐标。
+### 3.6 segmentation
+训练：
+```
+cd src/segmentation/;
+python main.py;
+```
 
-集群检测的规则：设定距离阈值x; 对每个物体DFS搜索周围x距离内的物体，如存在则归为同一集群。最后集群大小大于k的会被保留。输出的集群应当是按照经纬度的字典序排列的，这样每一年份的所有集群就有了一个独特的编号。
-
-### 3.3 可视化
-
-可视化指生成前一过程检出的集群区域的对应卫星图像。需要首先有整片区域卫星图像数据，以及detect.py的运行结果。
-
-visualize.py中含有的可视化功能包括：
-
-- 输出任意经纬度范围，任意清晰度的地图（getmap）
-- 输出检测目标的截图，支持随机采样/全部输出（mapcut_single)
-- 将检测目标在模型的输入图片上进行标注，支持随机采样/全部输出（annotate_single）
-- 输出集群的截图（mapcut_cluster)
-- 对集群按地理位置进行编号并对每个集群作其在多年间的变化图（comparison）
-- 生成集群和目标的热度图（heatmap_single单目标，heatmap_cluster集群，heatmap_region任意区域）
-
-其中前五个在result目录下生成结果。
+预测：
+```
+cd src/segmentation/;
+python make_buffer.py;
+python inference.py;
+python pose_process.py;
+```
 
 
 
