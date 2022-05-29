@@ -21,17 +21,19 @@ from models.experimental import *
 from utils.datasets import *
 from utils.general import *
 
+
 def load_classes(path):
     # Loads *.names file at 'path'
     with open(path, 'r') as f:
         names = f.read().split('\n')
     return list(filter(None, names))  # filter removes empty strings (such as last line)
 
-def detect(save_img=False):
+def detect():
     out, source, weights, view_img, save_img, save_txt, imgsz, cfg, names = \
         opt.output, opt.source, opt.weights, opt.view_img, opt.save_img, opt.save_txt, opt.img_size, opt.cfg, opt.names
     # webcam = source == '0' or source.startswith('rtsp') or source.startswith('http') or source.endswith('.txt')
     webcam = False
+    vis_cnt = 0
 
     # Initialize
     device = select_device(opt.device)
@@ -90,7 +92,7 @@ def detect(save_img=False):
         pred = model(img, augment=opt.augment)[0]
 
         # Apply NMS
-        pred = non_max_suppression(pred, opt.conf_thres, opt.iou_thres, classes=opt.classes, agnostic=opt.agnostic_nms)
+        pred = non_max_suppression(pred, opt.conf_thres, opt.nms_thres, classes=opt.classes, agnostic=opt.agnostic_nms)
         t2 = time_synchronized()
 
         # Apply Classifier
@@ -98,6 +100,7 @@ def detect(save_img=False):
             pred = apply_classifier(pred, modelc, img, im0s)
 
         # Process detections
+        has_vis_obj = False
         for i, det in enumerate(pred):  # detections per image
             if webcam:  # batch_size >= 1
                 p, s, im0 = path[i], '%g: ' % i, im0s[i].copy()
@@ -123,10 +126,11 @@ def detect(save_img=False):
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         with open(txt_path + '.txt', 'a') as f:
                             f.write(('%g ' * 6 + '\n') % (cls, *xywh, conf))  # label format
-
-                    if save_img or view_img:  # Add bbox to image
+                            
+                    if (save_img or view_img) and conf > opt.vis_conf_thres:  # Add bbox to image
                         label = '%s %.2f' % (names[int(cls)], conf)
-                        plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
+                        plot_one_box(xyxy, im0, label=None, color=colors[int(cls)], line_thickness=1)
+                        has_vis_obj = True
 
             # Print time (inference + NMS)
             print('%sDone. (%.3fs)' % (s, t2 - t1))
@@ -138,9 +142,11 @@ def detect(save_img=False):
                     raise StopIteration
 
             # Save results (image with detections)
-            if save_img:
+            if save_img and has_vis_obj:  # flag: has prediction  ###########################################
                 if dataset.mode == 'images':
-                    cv2.imwrite(save_path, im0)
+                    os.makedirs(opt.vis_path, exist_ok=True)
+                    cv2.imwrite(opt.vis_path + '{}.jpg'.format(vis_cnt), im0)
+                    vis_cnt += 1
                 else:
                     if vid_path != save_path:  # new video
                         vid_path = save_path
@@ -169,7 +175,7 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=str, default='inference/output', help='output folder')  # output folder
     parser.add_argument('--img-size', type=int, default=608, help='inference size (pixels)')
     parser.add_argument('--conf-thres', type=float, default=0.02, help='object confidence threshold')
-    parser.add_argument('--iou-thres', type=float, default=0.65, help='IOU threshold for NMS')
+    parser.add_argument('--nms-thres', type=float, default=0.65, help='IOU threshold for NMS')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     parser.add_argument('--view-img', action='store_true', help='display results')
     parser.add_argument('--save-img', action='store_true', help='save image results')
@@ -180,6 +186,8 @@ if __name__ == '__main__':
     parser.add_argument('--update', action='store_true', help='update all models')
     parser.add_argument('--cfg', type=str, default='cfg/yolov4.cfg', help='*.cfg path')
     parser.add_argument('--names', type=str, default='data/coco.names', help='*.cfg path')
+    parser.add_argument('--vis-path', type=str, default='vis/', help='visualize path')
+    parser.add_argument('--vis-conf-thres', type=float, default=0.18, help='confidence threshold for visualization')
     opt = parser.parse_args()
     print(opt)
 
