@@ -1,13 +1,12 @@
 *cache*
 .vscode
-detect_buffer*
+.DS_Store
 
-label_data/
-level18/
-pytorch-semantic-segmentation/
-result_v3/
+etc/
 
 *.zip
 *.jpg
 *.png
 *.pt
+
+!files/*
