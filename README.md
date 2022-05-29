@@ -85,6 +85,7 @@ python detect.py;
 
 输出格式：
 ```
+...
 cluster 
 k xmin ymin xmax ymax
 xmin_1 ymin_1 xmax_1 ymax_1
@@ -107,10 +108,13 @@ python main.py;
 cd src/segmentation/;
 python make_buffer.py;
 python inference.py;
-python pose_process.py;
+python post_process.py;
 ```
 
-
-
- 
+输出格式：
+```
+...
+farm_id, material, roof_size, whether_in_water, water_area, neighbor_ids
+...
+```
 
