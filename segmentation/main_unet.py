@@ -98,6 +98,7 @@ def main():
     parser.add_argument('--log-interval', type=int, default=20)
     parser.add_argument('--save-model', action='store_true', default=True)
     parser.add_argument('--visualize-only', action='store_true')
+    parser.add_argument('--level18', action='store_true')
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
 
@@ -119,8 +120,12 @@ def main():
         test_dataset = TestDataset_water()
         args.num_classes = 2
     else:
-        train_dataset = TrainDataset()
-        test_dataset = TestDataset()
+        if args.level18:
+            train_dataset = TrainDataset(im_root='data_roof/JPEGImages_Level18')
+            test_dataset = TestDataset(im_root='data_roof/JPEGImages_Level18')
+        else:
+            train_dataset = TrainDataset(im_root='data_roof/JPEGImages')
+            test_dataset = TestDataset(im_root='data_roof/JPEGImages')
         args.num_classes = 3
 
     train_loader = torch.utils.data.DataLoader(train_dataset, **train_kwargs)
