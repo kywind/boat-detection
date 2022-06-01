@@ -5,3 +5,4 @@ detect_buffer*/
 inference*/
 result/
 old/
+*.pt

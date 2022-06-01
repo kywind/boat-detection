@@ -74,9 +74,18 @@ def visualize(args, model, device, test_loader, directory):
         mask[output == 0] = np.array([0, 0, 0])
         mask[output == 1] = np.array([255, 0, 0])
         mask[output == 2] = np.array([0, 255, 0])
-        rgb = rgb * 255 * 0.7 + mask * 0.3
-        rgb = cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB)
-        cv2.imwrite(os.path.join(directory, '{}.jpg'.format(batch_idx)), rgb)
+        rgb_vis = rgb * 255 * 0.7 + mask * 0.3
+        rgb_vis = cv2.cvtColor(rgb_vis, cv2.COLOR_BGR2RGB)
+        cv2.imwrite(os.path.join(directory, '{}.jpg'.format(batch_idx)), rgb_vis)
+
+        target = target.squeeze(0).detach().cpu().numpy()
+        mask = np.zeros_like(rgb)
+        mask[target == 0] = np.array([0, 0, 0])
+        mask[target == 1] = np.array([255, 0, 0])
+        mask[target == 2] = np.array([0, 255, 0])
+        rgb_vis = rgb * 255 * 0.7 + mask * 0.3
+        rgb_vis = cv2.cvtColor(rgb_vis, cv2.COLOR_BGR2RGB)
+        cv2.imwrite(os.path.join(directory, '{}_gt.jpg'.format(batch_idx)), rgb_vis)
 
 
 def main():
@@ -96,7 +105,8 @@ def main():
     parser.add_argument('--seed', type=int, default=1)
     parser.add_argument('--log-interval', type=int, default=20)
     parser.add_argument('--save-model', action='store_true', default=True)
-    parser.add_argument('--visualize-only', action='store_true')
+    parser.add_argument('--test_only', action='store_true')
+    parser.add_argument('--visualize', action='store_true')
     parser.add_argument('--level18', action='store_true')
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
@@ -136,14 +146,18 @@ def main():
         in_channels=3,                  # model input channels (1 for gray-scale images, 3 for RGB, etc.)
         classes=args.num_classes,       # model output channels (number of classes in your dataset)
     ).to(device)
-
-    if args.visualize_only:
+    
+    if args.test_only:
         if args.task == 'water':
             model.load_state_dict(torch.load('ckpt_883.pt'))
-            visualize(args, model, device, test_loader, 'vis_unet_water_883/')
+            mean_loss, mean_iou = test(args, model, device, test_loader, 0)
+            if args.visualize: visualize(args, model, device, test_loader, 'vis_unet_water_883/')
         else:
             model.load_state_dict(torch.load('ckpt_830827.pt'))
-            visualize(args, model, device, test_loader, 'vis_unet_roof_830827/')
+            mean_loss, mean_iou = test(args, model, device, test_loader, 0)
+            if args.visualize: visualize(args, model, device, test_loader, 'vis_unet_roof_830827/')
+        print('mean loss:', mean_loss)
+        print('mean iou:', mean_iou)
 
     else:
         optimizer = optim.Adam(model.parameters(), lr=args.lr)
@@ -158,9 +172,8 @@ def main():
             if mean_iou > best_iou:
                 print('updating best model...')
                 best_iou = mean_iou
-                visualize(args, model, device, test_loader, 'vis_unet/')
-                if args.save_model:
-                    torch.save(model.state_dict(), 'ckpt.pt')
+                if args.visualize: visualize(args, model, device, test_loader, 'vis_unet/')
+                if args.save_model: torch.save(model.state_dict(), 'ckpt.pt')
             # scheduler.step()
 
 

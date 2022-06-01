@@ -1,10 +1,6 @@
-detect_buffer_*
-data/
-annotations/
-images/
-imglist/
+detect_buffer_*/
+data*/
 inference/
-labels/
 runs/
 weights/
 vis_temp/

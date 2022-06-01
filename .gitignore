@@ -4,9 +4,4 @@
 
 etc/
 
-*.zip
-*.jpg
-*.png
-*.pt
-
 !files/*
