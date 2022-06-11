@@ -4,3 +4,5 @@ inference/
 runs/
 weights/
 vis_temp/
+build/
+*.egg-info/
