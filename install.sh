@@ -1,6 +1,8 @@
 ## 0
 # git clone https://github.com/PKUCER/YONGONCHICKENFISH
 # cd YONGONCHICKENFISH
+git config --add user.name kywind
+git config --add user.email m74002@outlook.com
 
 ## 1
 # conda create -n satellite python=3.9
