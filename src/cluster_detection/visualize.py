@@ -6,6 +6,12 @@ import sys
 import numpy as np
 
 
+##### config #####
+data_path = '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/'  # e.g. data_path/xxx(year)/Exxxxx_Level_xx.tif
+tfw_path = '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/'
+level = 17
+##################
+
 def getclusters(filename, edge=0):   # get cluster arrays from a file
     fin = open(filename, 'r')
     data = fin.read().strip().split('cluster')[1:]

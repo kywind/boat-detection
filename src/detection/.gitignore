@@ -5,4 +5,5 @@ runs/
 weights/
 vis_temp/
 build/
+dist/
 *.egg-info/

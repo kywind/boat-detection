@@ -1,7 +1,6 @@
 *cache*
 .vscode
 .DS_Store
-
 etc/
-
+data/
 !files/*
