@@ -6,11 +6,35 @@ import sys
 import numpy as np
 
 
-##### config #####
-data_path = '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/'  # e.g. data_path/xxx(year)/Exxxxx_Level_xx.tif
-tfw_path = '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/'
-level = 17
-##################
+MAP_PATH_DICT = {
+    2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20101231/',
+    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20111231/',
+    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20121231/',
+    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20131231/',
+    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20141231/',
+    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20151231/',
+    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20161231/',
+    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20171231/',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20181231/',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20191231/',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20201231/',
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20220531/'
+}
+MAP_PATH_DICT = {
+    2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20101231.txt',
+    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20111231.txt',
+    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20121231.txt',
+    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20131231.txt',
+    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20141231.txt',
+    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20151231.txt',
+    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20161231.txt',
+    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20171231.txt',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20181231.txt',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20191231.txt',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20201231.txt',
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20220531.txt'
+}
+
 
 def getclusters(filename, edge=0):   # get cluster arrays from a file
     fin = open(filename, 'r')
@@ -77,17 +101,15 @@ def intersect(box1, box2):  # judge if two boxes intersect
 def getmap(box, year, ratio=1, res=None, level=17):  # get satellite map for any rectangle (source needed)
     channel = 3
     img_type = '.tif'
+    map_path = MAP_PATH_DICT[year]
+    tfw_path = TFW_PATH_DICT[year]
+    resolution = 0.0000107288 * ratio if not res else res
     if level == 18:
         img_size_bound = (12000,8000)
-        map_path = '/data/zkf/{}_level_18/'.format(year)
-        tfw_path = './utils/tfw_2018_level18.txt'
     elif level == 17:
         img_size_bound = (6000,4000)
-        map_path = '/data/zkf/rawimages/yangon_{}/'.format(year)
-        tfw_path = './utils/tfw.txt'
     else:
         raise NotImplementedError
-    resolution = 0.0000107288 * ratio if not res else res
         
     ftfw = open(tfw_path, 'r')
     tfw = ftfw.read().strip().split('\n')
