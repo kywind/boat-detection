@@ -8,23 +8,56 @@ import time
 from tqdm import tqdm
 from water_detect import get_water
 
-# vis_path = 'detect_buffer_vis/'
-# if os.path.exists(vis_path):
-#     shutil.rmtree(vis_path)
-# os.mkdir(vis_path)
+
+MAP_PATH_DICT = {
+    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20101231/',
+    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20111231/',
+    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20121231/',
+    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20131231/',
+    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20141231/',
+    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20151231/',
+    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20161231/',
+    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20171231/',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20181231/',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20191231/',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20201231/',
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20220531/'
+}
+BUFFER_PATH_DICT = {
+    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2010/',
+    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2011/',
+    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2012/',
+    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2013/',
+    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2014/',
+    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2015/',
+    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2016/',
+    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2017/',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2018/',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2019/',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2020/',
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2021/'
+}
+BUFFER_NOWATER_PATH_DICT = {
+    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2010_nowater/',
+    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2011_nowater/',
+    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2012_nowater/',
+    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2013_nowater/',
+    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2014_nowater/',
+    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2015_nowater/',
+    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2016_nowater/',
+    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2017_nowater/',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2018_nowater/',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2019_nowater/',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2020_nowater/',
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2021_nowater/'
+}
 
 
-# years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
-years = (2016,)
+years = MAP_PATH_DICT.keys()
 for year in years:
-    orig_jpg_path = '/data/rawimages/yangon_{}/'.format(year)
-    new_jpg_path = 'detect_buffer_jpg_{}/'.format(year)
-    new_jpg_path_nowater = 'detect_buffer_jpg_{}_nowater/'.format(year)
-    # orig_xml_path = '/mnt/2018/2018_xml_in_cluster/'
-    # new_xml_path = 'detect_buffer_annotation/'
-
-    if not os.path.exists(orig_jpg_path):
-        orig_jpg_path = '/data/rawimages/new_{}/'.format(year)
+    orig_jpg_path = MAP_PATH_DICT[year]
+    new_jpg_path = BUFFER_PATH_DICT[year]
+    new_jpg_path_nowater = BUFFER_NOWATER_PATH_DICT[year]
     
     if os.path.exists(new_jpg_path):
         shutil.rmtree(new_jpg_path)
@@ -54,7 +87,11 @@ for year in years:
     for f in tbar:
         tbar.set_description('cnt_water: {}, cnt_all: {}'.format(cnt, cnt_all))
         orig_jpg = orig_jpg_path + f + '.tif'
-        jpg = cv2.imread(orig_jpg)
+        try: 
+            jpg = cv2.imread(orig_jpg)
+            tmp = jpg.shape
+        except: 
+            continue
         
         # orig_xml = orig_xml_path + f + '.xml'
         # exists_label = os.path.exists(orig_xml)

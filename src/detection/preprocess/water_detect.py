@@ -39,7 +39,8 @@ def get_water(img):
     gray_img = np.pad(gray_img, ((2, 2), (2, 2)), mode='minimum')
     
     contours, hierarchy = cv2.findContours(gray_img,cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    contours.sort(key = cv2.contourArea, reverse=True)
+    contours = list(contours)  # https://github.com/opencv/opencv/issues/21284
+    contours.sort(key=cv2.contourArea, reverse=True)
     bounding_boxes = [cv2.boundingRect(cnt) for cnt in contours]
 
     # vis_path = 'visualize_water/'

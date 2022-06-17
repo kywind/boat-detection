@@ -41,7 +41,8 @@ def get_water(img):
     gray_img = np.uint8(gray_img)
     
     contours, hierarchy = cv2.findContours(gray_img,cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    contours.sort(key = cv2.contourArea, reverse=True)
+    contours = list(contours)  # https://github.com/opencv/opencv/issues/21284
+    contours.sort(key=cv2.contourArea, reverse=True)
     bounding_boxes = [cv2.boundingRect(cnt) for cnt in contours]
 
     for bbox in bounding_boxes:
@@ -53,28 +54,78 @@ def get_water(img):
         # img = cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
         # gray_img = cv2.rectangle(gray_img, (x,y), (x+w,y+h), (0,255,0), 2)
         # cv2.imwrite(vis_path+fn+'_gray.jpg', gray_img)
-        return img
-    return None
+        return True
+    return False
 
 
-years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
+MAP_PATH_DICT = {
+    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20101231/',
+    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20111231/',
+    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20121231/',
+    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20131231/',
+    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20141231/',
+    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20151231/',
+    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20161231/',
+    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20171231/',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20181231/',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20191231/',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20201231/',
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20220531/'
+}
+BUFFER_PATH_DICT = {
+    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2010_strict/',
+    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2011_strict/',
+    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2012_strict/',
+    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2013_strict/',
+    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2014_strict/',
+    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2015_strict/',
+    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2016_strict/',
+    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2017_strict/',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2018_strict/',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2019_strict/',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2020_strict/',
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2021_strict/'
+}
+BUFFER_NOWATER_PATH_DICT = {
+    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2010_strict_nowater/',
+    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2011_strict_nowater/',
+    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2012_strict_nowater/',
+    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2013_strict_nowater/',
+    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2014_strict_nowater/',
+    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2015_strict_nowater/',
+    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2016_strict_nowater/',
+    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2017_strict_nowater/',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2018_strict_nowater/',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2019_strict_nowater/',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2020_strict_nowater/',
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2021_strict_nowater/'
+}
+
+years = MAP_PATH_DICT.keys()
+# years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
 for year in years:
-    orig_jpg_path = '/data/rawimages/yangon_{}/'.format(year)
-    new_jpg_path = 'detect_buffer_jpg_{}/'.format(year)
-    orig_xml_path = '/mnt/2018/2018_xml_in_cluster/'
-    new_xml_path = 'detect_buffer_annotation/'
+    # orig_jpg_path = '/data/rawimages/yangon_{}/'.format(year)
+    # new_jpg_path = 'detect_buffer_jpg_{}/'.format(year)
+    # orig_xml_path = '/mnt/2018/2018_xml_in_cluster/'
+    # new_xml_path = 'detect_buffer_annotation/'
+    orig_jpg_path = MAP_PATH_DICT[year]
+    new_jpg_path = BUFFER_PATH_DICT[year]
+    new_jpg_path_nowater = BUFFER_NOWATER_PATH_DICT[year]
     
     if os.path.exists(new_jpg_path):
         shutil.rmtree(new_jpg_path)
     os.mkdir(new_jpg_path)
-    if year == 2018:
-        if os.path.exists(new_xml_path):
-            shutil.rmtree(new_xml_path)
-        os.mkdir(new_xml_path)
+    if os.path.exists(new_jpg_path_nowater):
+        shutil.rmtree(new_jpg_path_nowater)
+    os.mkdir(new_jpg_path_nowater)
+    # if year == 2018:
+    #     if os.path.exists(new_xml_path):
+    #         shutil.rmtree(new_xml_path)
+    #     os.mkdir(new_xml_path)
 
     filenames = [f[:-4] for f in os.listdir(orig_jpg_path) if f.endswith('.tif')]
     random.shuffle(filenames)
-    has_label = (year == 2018)
+    # has_label = (year == 2018)
     water_detect = True
 
     h = 608
@@ -84,24 +135,26 @@ for year in years:
     cnt_all = 0
     start_time = time.time()
     
-    for f in tqdm(filenames):
-        orig_xml = orig_xml_path + f + '.xml'
+    tbar = tqdm(filenames)
+    for f in tbar:
+        tbar.set_description('cnt_water: {}, cnt_all: {}'.format(cnt, cnt_all))
         orig_jpg = orig_jpg_path + f + '.tif'
         jpg = cv2.imread(orig_jpg)
-        exists_label = os.path.exists(orig_xml)
         
-        if has_label and exists_label:
-            fxml = open(orig_xml, 'r')
-            xml = fxml.read()
-            root = ET.fromstring(xml)
-            xmin, ymin, xmax, ymax = [], [], [], []
-            
-            for item in root.findall('object'):
-                xmin.append(eval(item.find('bndbox/xmin').text))
-                ymin.append(eval(item.find('bndbox/ymin').text))
-                xmax.append(eval(item.find('bndbox/xmax').text))
-                ymax.append(eval(item.find('bndbox/ymax').text))
-            fxml.close()
+        # exists_label = os.path.exists(orig_xml)
+        # orig_xml = orig_xml_path + f + '.xml'
+        # if has_label and exists_label:
+        #     fxml = open(orig_xml, 'r')
+        #     xml = fxml.read()
+        #     root = ET.fromstring(xml)
+        #     xmin, ymin, xmax, ymax = [], [], [], []
+        #     
+        #     for item in root.findall('object'):
+        #         xmin.append(eval(item.find('bndbox/xmin').text))
+        #         ymin.append(eval(item.find('bndbox/ymin').text))
+        #         xmax.append(eval(item.find('bndbox/xmax').text))
+        #         ymax.append(eval(item.find('bndbox/ymax').text))
+        #     fxml.close()
             
         xrange = []
         yrange = []
@@ -131,34 +184,37 @@ for year in years:
 
                 img = jpg[jmin:jmax, imin:imax, :]
                 if water_detect:
-                    img = get_water(img)
+                    flag = get_water(img)
                     
-                if img is not None:
+                if flag:
                     cnt += 1
                     fn = '{}{}_{}_{}.jpg'.format(new_jpg_path,f,imin,jmin)
                     cv2.imwrite(fn, img)
-                    # print('Saved:', fn)
-                    
-                    if has_label and exists_label:         
-                        data = ET.Element('annotation')
+                
+                else:
+                    fn = '{}{}_{}_{}.jpg'.format(new_jpg_path_nowater,f,imin,jmin)
+                    cv2.imwrite(fn, img)
 
-                        for k in range(len(xmin)):
-                            if xmin[k] >= imin and xmax[k] < imax and ymin[k] >= jmin and ymax[k] < jmax:
-                                obj = ET.SubElement(data, 'object')
-                                box = ET.SubElement(obj, 'bndbox')
-                                x1 = ET.SubElement(box, 'xmin')
-                                y1 = ET.SubElement(box, 'ymin')
-                                x2 = ET.SubElement(box, 'xmax')
-                                y2 = ET.SubElement(box, 'ymax')
-                                x1.text = str(xmin[k]-imin)
-                                x2.text = str(xmax[k]-imin)
-                                y1.text = str(ymin[k]-jmin)
-                                y2.text = str(ymax[k]-jmin)
-                                
-                        mydata = ET.tostring(data)
-                        fout = open('{}{}_{}_{}.xml'.format(new_xml_path,f,imin,jmin), 'wb+')
-                        fout.write(mydata)
-                        fout.close()
+                    # if has_label and exists_label:         
+                    #     data = ET.Element('annotation')
+                    # 
+                    #     for k in range(len(xmin)):
+                    #         if xmin[k] >= imin and xmax[k] < imax and ymin[k] >= jmin and ymax[k] < jmax:
+                    #             obj = ET.SubElement(data, 'object')
+                    #             box = ET.SubElement(obj, 'bndbox')
+                    #             x1 = ET.SubElement(box, 'xmin')
+                    #             y1 = ET.SubElement(box, 'ymin')
+                    #             x2 = ET.SubElement(box, 'xmax')
+                    #             y2 = ET.SubElement(box, 'ymax')
+                    #             x1.text = str(xmin[k]-imin)
+                    #             x2.text = str(xmax[k]-imin)
+                    #             y1.text = str(ymin[k]-jmin)
+                    #             y2.text = str(ymax[k]-jmin)
+                    #             
+                    #     mydata = ET.tostring(data)
+                    #     fout = open('{}{}_{}_{}.xml'.format(new_xml_path,f,imin,jmin), 'wb+')
+                    #     fout.write(mydata)
+                    #     fout.close()
                     
         # if cnt >= 500:
         #     break

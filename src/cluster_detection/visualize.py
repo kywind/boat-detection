@@ -20,7 +20,7 @@ MAP_PATH_DICT = {
     2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20201231/',
     2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20220531/'
 }
-MAP_PATH_DICT = {
+TFW_PATH_DICT = {
     2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20101231.txt',
     2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20111231.txt',
     2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20121231.txt',
@@ -537,8 +537,8 @@ def heatmap_region(year, taskname=None, maprange=None, single=True, cluster=True
 if __name__ == '__main__':
     # mapcut_single(2010, '2010_nowater')
     # mapcut_single(2018)
-    # for year in range(2020, 2021):
     #     img = getmap((95, 16, 97, 18), year, res=0.002)
     #     cv2.imwrite('{}.jpg'.format(year), img)
-    img = getmap((95, 16, 97, 18), 2018, res=0.001, level=18)
-    cv2.imwrite('2018_level18.jpg', img)
+    for year in range(2011, 2021):
+        img = getmap((95, 16, 97, 18), year, res=0.001, level=17)
+        cv2.imwrite(f'{year}_level17.png', img)

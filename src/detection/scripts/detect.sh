@@ -1,4 +1,4 @@
-weight_path="/home/pub_acc/zkf/project/detection/runs/exp64_0829-no-intersect-608-new-new/weights/best_0829-no-intersect-608-new-new.pt"
+weight_path="/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/weights/best_0829-no-intersect-608-new-new.pt"
 
 python detect.py --save-txt --conf 0.02 --img 608 \
 --output inference/2010 \
@@ -43,7 +43,31 @@ python detect.py --save-txt --conf 0.02 --img 608 \
 --weights $weight_path
 
 python detect.py --save-txt --conf 0.02 --img 608 \
+--output inference/2017 \
+--source detect_buffer_jpg_2017/ \
+--cfg cfg/satellite-anchor-608.cfg --name cfg/satellite.names \
+--weights $weight_path
+
+python detect.py --save-txt --conf 0.02 --img 608 \
 --output inference/2018 \
 --source detect_buffer_jpg_2018/ \
+--cfg cfg/satellite-anchor-608.cfg --name cfg/satellite.names \
+--weights $weight_path
+
+python detect.py --save-txt --conf 0.02 --img 608 \
+--output inference/2019 \
+--source detect_buffer_jpg_2019/ \
+--cfg cfg/satellite-anchor-608.cfg --name cfg/satellite.names \
+--weights $weight_path
+
+python detect.py --save-txt --conf 0.02 --img 608 \
+--output inference/2020 \
+--source detect_buffer_jpg_2020/ \
+--cfg cfg/satellite-anchor-608.cfg --name cfg/satellite.names \
+--weights $weight_path
+
+python detect.py --save-txt --conf 0.02 --img 608 \
+--output inference/2021 \
+--source detect_buffer_jpg_2021/ \
 --cfg cfg/satellite-anchor-608.cfg --name cfg/satellite.names \
 --weights $weight_path
