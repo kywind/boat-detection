@@ -20,13 +20,28 @@ def intersection_over_union(boxA, boxB):
     iou = interArea / float(min(boxAArea, boxBArea))
     return iou, boxBArea > boxAArea
 
-tasknames = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018]
+tasknames = range(2010, 2022)
 conf_thres = 0.2
 iou_thres = 0.55
 W, H = 608, 608
 
+TFW_PATH_DICT = {
+    2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20101231.txt',
+    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20111231.txt',
+    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20121231.txt',
+    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20131231.txt',
+    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20141231.txt',
+    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20151231.txt',
+    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20161231.txt',
+    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20171231.txt',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20181231.txt',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20191231.txt',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20201231.txt',
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20220531.txt'
+}
+
 for taskname in tasknames:
-    tfw_dir = './utils/tfw.txt'
+    tfw_dir = TFW_PATH_DICT[taskname]
     out_dir = './data/{}.txt'.format(taskname)
     path = './raw/{}/'.format(taskname)
     

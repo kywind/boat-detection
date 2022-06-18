@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import math
 import sys
 from visualize import *
@@ -88,17 +87,16 @@ def detect(year):
     
 
 def main():
-    years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018)
+    years = range(2010, 2022)
     for year in years:
         detect(year)
-        # mapcut_single(year)  
+        mapcut_single(year, size=200, annotate=False)
+        mapcut_single(year, size=500, annotate=False)
+        mapcut_single(year, size=1000, annotate=False)  
         mapcut_cluster(year)
     comparison(years)
 
 
 if __name__ == '__main__':
     main()
-    # mapcut_single(2018)
-    # detect(2018)
-    # mapcut_cluster(2018)
 

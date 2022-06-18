@@ -157,14 +157,14 @@ def getmap(box, year, ratio=1, res=None, level=17):  # get satellite map for any
     return res
 
 
-def mapcut_single(year, taskname=None, num=None):  # random pick any number of single targets and generate mapcut of any fixed size (e.g. 100x100)
+def mapcut_single(year, taskname=None, size=100, annotate=True, num=None):  # random pick any number of single targets and generate mapcut of any fixed size (e.g. 100x100)
     if taskname is None:
         taskname = year
     filename = './data/{}.txt'.format(taskname)
-    savepath = './result/{}_single/'.format(taskname)
+    savepath = './result/{}_single_{}/'.format(taskname, size)
     # w, h = 200, 200
-    # w, h = w * 0.0000107288, h * 0.0000107288
-    w, h = 0.002, 0.002
+    w, h = size * 0.0000107288, size * 0.0000107288
+    # w, h = 0.002, 0.002
 
     if os.path.exists(savepath):
         shutil.rmtree(savepath)
@@ -191,7 +191,8 @@ def mapcut_single(year, taskname=None, num=None):  # random pick any number of s
             img = getmap(box, year)
             mid_x = int(img.shape[0] / 2)
             mid_y = int(img.shape[1] / 2)
-            img = cv2.rectangle(img, (mid_x-delta_x, mid_y-delta_y), (mid_x+delta_x, mid_y+delta_y), (0, 0, 255), 1)
+            if annotate:
+                img = cv2.rectangle(img, (mid_x-delta_x, mid_y-delta_y), (mid_x+delta_x, mid_y+delta_y), (0, 0, 255), 1)
             cv2.imwrite(savepath + '{}.jpg'.format(cnt), img)
             f = open(savepath + '{}.txt'.format(cnt), 'w')
             f.write('{} {} {} {}'.format(xmin, ymin, xmax, ymax))
