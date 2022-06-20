@@ -166,9 +166,9 @@ def mapcut_single(year, taskname=None, size=100, annotate=True, num=None):  # ra
     w, h = size * 0.0000107288, size * 0.0000107288
     # w, h = 0.002, 0.002
 
-    if os.path.exists(savepath):
-        shutil.rmtree(savepath)
-    os.mkdir(savepath)
+    # if os.path.exists(savepath):
+    #     shutil.rmtree(savepath)
+    # os.mkdir(savepath)
 
     with open(filename, 'r') as f:
         data = f.read().strip().split('\n')
@@ -228,9 +228,9 @@ def annotate_single(year, taskname=None, num=50):  # random pick 50 original (60
         infodict[s[0]] = (eval(s[1]), eval(s[2]), eval(s[3]), eval(s[4]))
     finfo.close()
     
-    if os.path.exists(savepath):
-        shutil.rmtree(savepath)
-    os.mkdir(savepath)
+    # if os.path.exists(savepath):
+    #     shutil.rmtree(savepath)
+    # os.mkdir(savepath)
     
     flist = [f[:-4] for f in os.listdir(txtpath) if f.endswith('.txt')]
     aux = range(len(flist))
@@ -278,9 +278,9 @@ def mapcut_cluster(year, taskname=None):  # generate mapcut of clusters with ori
     filename = './result/{}.txt'.format(taskname)
     save_path = './result/{}_cluster/'.format(taskname)
     
-    if os.path.exists(save_path):
-        shutil.rmtree(save_path)
-    os.mkdir(save_path)
+    # if os.path.exists(save_path):
+    #     shutil.rmtree(save_path)
+    # os.mkdir(save_path)
     
     ranges, sizes, contents = getclusters(filename, edge)
     for i in range(len(sizes)):
@@ -345,9 +345,9 @@ def comparison(years, tasknames=None, thres=5, res=0.0000107288):  # get mapcut 
             hull_all.append([hull_new, hull_new_info])
 
     savepath = 'result/comparison/'
-    if os.path.exists(savepath):
-        shutil.rmtree(savepath)
-    os.mkdir(savepath)
+    # if os.path.exists(savepath):
+    #     shutil.rmtree(savepath)
+    # os.mkdir(savepath)
     
     index_dict = {}
 
