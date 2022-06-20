@@ -25,23 +25,20 @@ class InfDataset(Dataset):
             im_name = self.im_names[idx][:-4]
             im_path = path.join(im_root, im_name + '.jpg')
 
-            im = np.asarray(Image.open(im_path).convert('RGB'))
-            im = cv2.resize(im, (2*im.shape[1], 2*im.shape[0]))
-            im = np.pad(im, ((self.pad, self.pad), (self.pad, self.pad), (0, 0)))
-
-            im = transforms.ToTensor()(im)
-            
-            scale = 2
-            H, W = 224, 224
-
-            h, w = int(H / 2 / scale), int(W / 2 / scale)  # half height and width to crop on im
-            c = (int(im.shape[2]/2), int(im.shape[1]/2))
-            xmin, ymin = int(c[0] - w), int(c[1] - h)
-            im_crop = transforms.functional.resized_crop(im, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.BILINEAR)
-            # print(im_crop)
-            # cv2.imwrite('tmp.jpg',im_crop.permute(1,2,0).numpy()*255)
-            # raise Exception
-            self.ims.append(im_crop)
+            # im = np.asarray(Image.open(im_path).convert('RGB'))
+            # im = cv2.resize(im, (2*im.shape[1], 2*im.shape[0]))
+            # im = np.pad(im, ((self.pad, self.pad), (self.pad, self.pad), (0, 0)))
+            # im = transforms.ToTensor()(im)
+            # scale = 2
+            # H, W = 224, 224
+            # h, w = int(H / 2 / scale), int(W / 2 / scale)  # half height and width to crop on im
+            # c = (int(im.shape[2]/2), int(im.shape[1]/2))
+            # xmin, ymin = int(c[0] - w), int(c[1] - h)
+            # im_crop = transforms.functional.resized_crop(im, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.BILINEAR)
+            # # print(im_crop)
+            # # cv2.imwrite('tmp.jpg',im_crop.permute(1,2,0).numpy()*255)
+            # # raise Exception
+            self.ims.append(im_path)
 
 
     def __len__(self):
@@ -49,7 +46,17 @@ class InfDataset(Dataset):
 
     def __getitem__(self, idx):
         # print(idx)
-        im_rgb = self.ims[idx]
+        im_path = self.ims[idx]
+        im = np.asarray(Image.open(im_path).convert('RGB'))
+        im = cv2.resize(im, (2*im.shape[1], 2*im.shape[0]))
+        im = np.pad(im, ((self.pad, self.pad), (self.pad, self.pad), (0, 0)))
+        im = transforms.ToTensor()(im)
+        scale = 2
+        H, W = 224, 224
+        h, w = int(H / 2 / scale), int(W / 2 / scale)  # half height and width to crop on im
+        c = (int(im.shape[2]/2), int(im.shape[1]/2))
+        xmin, ymin = int(c[0] - w), int(c[1] - h)
+        im_rgb = transforms.functional.resized_crop(im, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.BILINEAR)
 
         im = transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))(im_rgb)
 
@@ -70,27 +77,32 @@ class InfDataset_water(Dataset):
             im_name = self.im_names[idx][:-4]
             im_path = path.join(im_root, im_name + '.jpg')
 
-            im = np.asarray(Image.open(im_path).convert('RGB'))
-
-            im = transforms.ToTensor()(im)
-
-            scale = 1
-            H, W = 448, 448
-
-            h, w = int(H / 2 / scale), int(W / 2 / scale)  # half height and width to crop on im
-            c = (int(im.shape[2]/2), int(im.shape[1]/2))
-            xmin, ymin = int(c[0] - w), int(c[1] - h)
-            im_crop = transforms.functional.resized_crop(im, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.BILINEAR)
-            # print(im_crop)
-            # cv2.imwrite('tmp.jpg',im_crop.permute(1,2,0).numpy()*255)
-            # raise Exception
-            self.ims.append(im_crop)
+            # im = np.asarray(Image.open(im_path).convert('RGB'))
+            # im = transforms.ToTensor()(im)
+            # scale = 1
+            # H, W = 448, 448
+            # h, w = int(H / 2 / scale), int(W / 2 / scale)  # half height and width to crop on im
+            # c = (int(im.shape[2]/2), int(im.shape[1]/2))
+            # xmin, ymin = int(c[0] - w), int(c[1] - h)
+            # im_crop = transforms.functional.resized_crop(im, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.BILINEAR)
+            # # print(im_crop)
+            # # cv2.imwrite('tmp.jpg',im_crop.permute(1,2,0).numpy()*255)
+            # # raise Exception
+            self.ims.append(im_path)
 
     def __len__(self):
         return len(self.ims)
 
     def __getitem__(self, idx):
-        im_rgb = self.ims[idx]
+        im_path = self.ims[idx]
+        im = np.asarray(Image.open(im_path).convert('RGB'))
+        im = transforms.ToTensor()(im)
+        scale = 1
+        H, W = 448, 448
+        h, w = int(H / 2 / scale), int(W / 2 / scale)  # half height and width to crop on im
+        c = (int(im.shape[2]/2), int(im.shape[1]/2))
+        xmin, ymin = int(c[0] - w), int(c[1] - h)
+        im_rgb = transforms.functional.resized_crop(im, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.BILINEAR)
 
         im = transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))(im_rgb)
 

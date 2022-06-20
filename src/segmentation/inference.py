@@ -54,12 +54,12 @@ def main():
                        'shuffle': False}
         test_kwargs.update(cuda_kwargs)
     
-    for year in [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018]:
+    for year in range(2016, 2022):
         if args.task == 'water':
-            test_dataset = InfDataset_water('detect_buffer_water_{}/'.format(year))
+            test_dataset = InfDataset_water('data/{}_single_500/'.format(year))
             args.num_classes = 2
         else:
-            test_dataset = InfDataset('detect_buffer_roof_{}/'.format(year))
+            test_dataset = InfDataset('data/{}_single_200/'.format(year))
             args.num_classes = 3
 
         test_loader = torch.utils.data.DataLoader(test_dataset, **test_kwargs)
