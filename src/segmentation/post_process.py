@@ -9,7 +9,7 @@ for year in range(2010, 2022):
     water_in_path = 'inference/inference_water_{}/'.format(year)
     water_meta_path = 'inference/{}_water_meta/'.format(year)
     files = [f for f in os.listdir(roof_in_path) if f.endswith('npy')]
-    fout = open('seg_res_{}.txt'.format(year), 'w')
+    fout = open('result/seg_res_{}.txt'.format(year), 'w')
     for file_id in range(len(files)):
         res = 0.0000107288
         res_meter = res * 111000

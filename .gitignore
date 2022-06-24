@@ -3,4 +3,5 @@
 .DS_Store
 etc/
 data/
+result/
 !files/*
