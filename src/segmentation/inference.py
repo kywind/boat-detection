@@ -46,6 +46,7 @@ def main():
     torch.manual_seed(args.seed)
 
     device = torch.device("cuda" if use_cuda else "cpu")
+    print(device)
 
     test_kwargs = {'batch_size': args.test_batch_size}
     if use_cuda:
@@ -59,7 +60,8 @@ def main():
             test_dataset = InfDataset_water('data/{}_single_500/'.format(year))
             args.num_classes = 2
         else:
-            test_dataset = InfDataset('data/{}_single_200/'.format(year))
+            # test_dataset = InfDataset('data/{}_single_200/'.format(year))
+            test_dataset = InfDataset('../cluster_detection/')
             args.num_classes = 3
 
         test_loader = torch.utils.data.DataLoader(test_dataset, **test_kwargs)
@@ -72,10 +74,10 @@ def main():
         ).to(device)
 
         if args.task == 'water':
-            model.load_state_dict(torch.load('ckpt_883.pt'))
+            model.load_state_dict(torch.load('ckpt_883.pt', map_location=torch.device('cpu')))
             inference(args, model, device, test_loader, 'inference_water_{}/'.format(year))
         else:
-            model.load_state_dict(torch.load('ckpt_830827.pt'))
+            model.load_state_dict(torch.load('ckpt_830827.pt', map_location=torch.device('cpu')))
             inference(args, model, device, test_loader, 'inference_roof_{}/'.format(year))
 
 

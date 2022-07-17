@@ -2,3 +2,5 @@ raw/
 result/
 utils/edge_*
 utils/map_*
+utils/*.jpg
+utils/*.png

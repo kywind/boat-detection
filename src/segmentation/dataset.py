@@ -52,7 +52,7 @@ class InfDataset(Dataset):
         im = np.pad(im, ((self.pad, self.pad), (self.pad, self.pad), (0, 0)))
         im = transforms.ToTensor()(im)
         scale = 2
-        H, W = 224, 224
+        H, W = 896, 896
         h, w = int(H / 2 / scale), int(W / 2 / scale)  # half height and width to crop on im
         c = (int(im.shape[2]/2), int(im.shape[1]/2))
         xmin, ymin = int(c[0] - w), int(c[1] - h)

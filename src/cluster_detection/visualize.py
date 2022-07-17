@@ -149,11 +149,9 @@ def getmap(box, year, ratio=1, res=None, level=17):  # get satellite map for any
                 i, j = ii[t], jj[t]
                 h = int((deltay + j * ystep) // resolution)
                 w = int((deltax + i * xstep) // resolution)
-                if h >= res.shape[0] or w >= res.shape[1]:
-                    continue 
-                res[h][w] = img[j][i]
-                # res[h][w] = np.array([255,255,255])
-    res = cv2.flip(res, 0)
+                if (height-h) >= res.shape[0] or w >= res.shape[1]: continue 
+                res[height-h][w] = img[j][i]
+                # res[height-h][w] = np.array([255,255,255])
     return res
 
 
@@ -540,6 +538,6 @@ if __name__ == '__main__':
     # mapcut_single(2018)
     #     img = getmap((95, 16, 97, 18), year, res=0.002)
     #     cv2.imwrite('{}.jpg'.format(year), img)
-    for year in range(2011, 2021):
-        img = getmap((95, 16, 97, 18), year, res=0.001, level=17)
-        cv2.imwrite(f'{year}_level17.png', img)
+    # for year in range(2011, 2021):
+    #     img = getmap((95, 16, 97, 18), year, res=0.001, level=17)
+    #     cv2.imwrite(f'{year}_level17.png', img)
