@@ -541,3 +541,36 @@ if __name__ == '__main__':
     # for year in range(2011, 2021):
     #     img = getmap((95, 16, 97, 18), year, res=0.001, level=17)
     #     cv2.imwrite(f'{year}_level17.png', img)
+
+    
+    # csv_path = '/home/zhangkaifeng/YONGONCHICKENFISH/src/cluster_detection/utils/2021disappear_position.csv'
+    # with open(csv_path) as f:
+    #     data = f.read().strip().split('\n')
+    # for i, line in enumerate(data[1:]):
+    #     for year in range(2010, 2022):
+    #         x, y = eval(line.split(',')[0]), eval(line.split(',')[1])
+    #         # print(x, y)
+    #         x1, y1, x2, y2 = x - 0.0000107288 * 200, y - 0.0000107288 * 200, x + 0.0000107288 * 200, y + 0.0000107288 * 200
+    #         img = getmap((x1, y1, x2, y2), year)
+    #         cv2.imwrite(f'tmp/{i}_{year}.png', img)
+    
+    cnt = 0
+    fout = open('out.txt', 'w')
+    csv_path = '/home/zhangkaifeng/YONGONCHICKENFISH/src/cluster_detection/utils/2021disappear_position.csv'
+    with open(csv_path) as f:
+        data = f.read().strip().split('\n')
+    for i, line in enumerate(data[1:]):
+        img1 = cv2.imread(f'tmp/{i}_2021.png')
+        for year in range(2010, 2021):
+            img2 = cv2.imread(f'tmp/{i}_{year}.png')
+            img_area = img1.shape[0] * img1.shape[1]
+            assert img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]
+            area = (np.abs(img2 - img1).sum(2) == 0).sum()
+            if area > 0.5 * img_area:
+                # import pdb; pdb.set_trace()
+                cnt += 1
+                fout.write(f'{i+1} {year}\n')
+                break
+    fout.close()
+                
+                
