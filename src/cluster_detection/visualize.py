@@ -18,7 +18,8 @@ MAP_PATH_DICT = {
     2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20181231/',
     2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20191231/',
     2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20201231/',
-    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20220531/'
+    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20220531/'
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/2021_new/'
 }
 TFW_PATH_DICT = {
     2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20101231.txt',
@@ -32,7 +33,8 @@ TFW_PATH_DICT = {
     2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20181231.txt',
     2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20191231.txt',
     2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20201231.txt',
-    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20220531.txt'
+    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20220531.txt'
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/2021_new.txt'
 }
 
 
@@ -534,13 +536,9 @@ def heatmap_region(year, taskname=None, maprange=None, single=True, cluster=True
 
     
 if __name__ == '__main__':
-    # mapcut_single(2010, '2010_nowater')
-    # mapcut_single(2018)
-    #     img = getmap((95, 16, 97, 18), year, res=0.002)
-    #     cv2.imwrite('{}.jpg'.format(year), img)
-    # for year in range(2011, 2021):
-    #     img = getmap((95, 16, 97, 18), year, res=0.001, level=17)
-    #     cv2.imwrite(f'{year}_level17.png', img)
+    for year in range(2021, 2022):
+        img = getmap((95, 16, 97, 18), year, res=0.01, level=17)
+        cv2.imwrite(f'{year}_level17.png', img)
 
     
     # csv_path = '/home/zhangkaifeng/YONGONCHICKENFISH/src/cluster_detection/utils/2021disappear_position.csv'
@@ -554,23 +552,23 @@ if __name__ == '__main__':
     #         img = getmap((x1, y1, x2, y2), year)
     #         cv2.imwrite(f'tmp/{i}_{year}.png', img)
     
-    cnt = 0
-    fout = open('out.txt', 'w')
-    csv_path = '/home/zhangkaifeng/YONGONCHICKENFISH/src/cluster_detection/utils/2021disappear_position.csv'
-    with open(csv_path) as f:
-        data = f.read().strip().split('\n')
-    for i, line in enumerate(data[1:]):
-        img1 = cv2.imread(f'tmp/{i}_2021.png')
-        for year in range(2010, 2021):
-            img2 = cv2.imread(f'tmp/{i}_{year}.png')
-            img_area = img1.shape[0] * img1.shape[1]
-            assert img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]
-            area = (np.abs(img2 - img1).sum(2) == 0).sum()
-            if area > 0.5 * img_area:
-                # import pdb; pdb.set_trace()
-                cnt += 1
-                fout.write(f'{i+1} {year}\n')
-                break
-    fout.close()
+    # cnt = 0
+    # fout = open('out.txt', 'w')
+    # csv_path = '/home/zhangkaifeng/YONGONCHICKENFISH/src/cluster_detection/utils/2021disappear_position.csv'
+    # with open(csv_path) as f:
+    #     data = f.read().strip().split('\n')
+    # for i, line in enumerate(data[1:]):
+    #     img1 = cv2.imread(f'tmp/{i}_2021.png')
+    #     for year in range(2010, 2021):
+    #         img2 = cv2.imread(f'tmp/{i}_{year}.png')
+    #         img_area = img1.shape[0] * img1.shape[1]
+    #         assert img1.shape[0] == img2.shape[0] and img1.shape[1] == img2.shape[1]
+    #         area = (np.abs(img2 - img1).sum(2) == 0).sum()
+    #         if area > 0.5 * img_area:
+    #             # import pdb; pdb.set_trace()
+    #             cnt += 1
+    #             fout.write(f'{i+1} {year}\n')
+    #             break
+    # fout.close()
                 
                 
