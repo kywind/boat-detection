@@ -100,7 +100,7 @@ def intersect(box1, box2):  # judge if two boxes intersect
     return not (box1[2] < box2[0] or box1[0] > box2[2] or box1[3] < box2[1] or box1[1] > box2[3])
 
 
-def getmap(box, year, ratio=1, res=None, level=17):  # get satellite map for any rectangle (source needed)
+def getmap(box, year, ratio=1, res=None, level=17, white=False):  # get satellite map for any rectangle (source needed)
     channel = 3
     img_type = '.tif'
     map_path = MAP_PATH_DICT[year]
@@ -125,7 +125,8 @@ def getmap(box, year, ratio=1, res=None, level=17):  # get satellite map for any
     x_min, y_min, x_max, y_max = box
     width = int((x_max - x_min) // resolution) + 1
     height = int((y_max - y_min) // resolution) + 1
-    res = np.zeros((height,width,channel))
+    if white: res = np.ones((height,width,channel)) * 255
+    else: res = np.zeros((height,width,channel))
 
     for name in tfw_dict.keys():
         xstep, ystep, x0, y0 = tfw_dict[name]
@@ -152,8 +153,8 @@ def getmap(box, year, ratio=1, res=None, level=17):  # get satellite map for any
                 h = int((deltay + j * ystep) // resolution)
                 w = int((deltax + i * xstep) // resolution)
                 if (height-h) >= res.shape[0] or w >= res.shape[1]: continue 
-                res[height-h][w] = img[j][i]
-                # res[height-h][w] = np.array([255,255,255])
+                if white: res[height-h][w] = np.array([255,255,255])
+                else: res[height-h][w] = img[j][i]
     return res
 
 
@@ -444,47 +445,55 @@ def heatmap_cluster(year, taskname=None, maptype='edge', x_pix=10000):  # genera
     thres = 5
     bg = cv2.imread('utils/{}_{}/{}.jpg'.format(maptype, x_pix, year))
 
-    xmin, ymin, xmax, ymax, size, xall, yall = getclusters(filename, edge)
-    fout = open(save_path + '{}.txt'.format(taskname), 'w')
+    ranges, sizes, contents = getclusters(filename, edge)
+    # xmin, ymin, xmax, ymax, size, xall, yall = getclusters(filename, edge)
+    # fout = open(save_path + '{}.txt'.format(taskname), 'w')
     cnt = 0
-    for i in range(len(size)):
-        if size[i] < thres:
+    for i in range(len(sizes)):
+        xmin, ymin, xmax, ymax = ranges[i]
+        if sizes[i] < thres:
             continue
         cnt += 1
-        x0_heat, y0_heat = int((xmin[i]-x_min)//res), int((y_max-ymax[i])//res)
-        x1_heat, y1_heat = int((xmax[i]-x_min)//res), int((y_max-ymin[i])//res)     
+        x0_heat, y0_heat = int((xmin-x_min)//res), int((y_max-ymax)//res)
+        x1_heat, y1_heat = int((xmax-x_min)//res), int((y_max-ymin)//res)     
         x_center, y_center = (x0_heat + x1_heat) / 2, (y0_heat + y1_heat) / 2
-        # bg = cv2.rectangle(bg, (x0_heat, y0_heat), (x1_heat, y1_heat), (0, 255 - step * size[i], 255), 1)
+        # bg = cv2.rectangle(bg, (x0_heat, y0_heat), (x1_heat, y1_heat), (0, 255 - step * sizes[i], 255), 1)
         
         targets = []
-        for j in range(len(xall[i])):
-            x_heat, y_heat = int((xall[i][j]-x_min)//res), int((y_max-yall[i][j])//res)
+        xall = []
+        yall = []
+        for j in range(len(contents[i])):
+            xall.append((contents[i][j][0] + contents[i][j][2]) / 2)
+            yall.append((contents[i][j][1] + contents[i][j][3]) / 2)
+        for j in range(len(contents[i])):
+            x_heat, y_heat = int((xall[j]-x_min)//res), int((y_max-yall[j])//res)
             targets.append([x_heat, y_heat])
-            # bg = cv2.circle(bg, (x_heat, y_heat), 2, (0, 255 - step * size[i], 255), -1)
+            # bg = cv2.circle(bg, (x_heat, y_heat), 2, (0, 255 - step * sizes[i], 255), -1)
             
         targets = np.array(targets)       
         hull = cv2.convexHull(targets)
         hull = np.array(hull).reshape(-1,2)
         
-        linewidth = 20
+        linewidth = int(2 * x_pix / 1000)
         area = PolyArea(hull, linewidth)
-        density = size[i] / area
+        density = sizes[i] / area
         color = (0,255-10000*density,255)
         bg = cv2.fillPoly(bg, [hull], color)
         
         for j in range(len(hull)):
+            print(tuple(hull[j]), tuple(hull[(j+1)%len(hull)]))
             bg = cv2.line(bg, tuple(hull[j]), tuple(hull[(j+1)%len(hull)]), color, linewidth)
             
-        fout.write('id:\n{}\nregion:\n{} {} {} {}\n'.format(cnt, xmin[i], ymin[i], xmax[i], ymax[i]))
-        fout.write('center:\n{} {}\n{} {}\n'.format((xmin[i]+xmax[i])/2, (ymin[i]+ymax[i])/2, x_center, y_center))
-        fout.write('targets:\n')
-        for j in range(len(xall[i])):
-            fout.write('{} {}\n'.format(xall[i][j], yall[i][j]))
-        fout.write('convexhull:\n')
-        for j in range(len(hull)):
-            fout.write('{} {}\n'.format(hull[j][0], hull[j][1]))
+        # fout.write('id:\n{}\nregion:\n{} {} {} {}\n'.format(cnt, xmin, ymin, xmax, ymax))
+        # fout.write('center:\n{} {}\n{} {}\n'.format((xmin+xmax)/2, (ymin+ymax)/2, x_center, y_center))
+        # fout.write('targets:\n')
+        # for j in range(len(contents[i])):
+        #     fout.write('{} {}\n'.format(xall[j], yall[j]))
+        # fout.write('convexhull:\n')
+        # for j in range(len(hull)):
+        #     fout.write('{} {}\n'.format(hull[j][0], hull[j][1]))
    
-    cv2.imwrite(save_path + '{}.jpg'.format(taskname), bg)
+    cv2.imwrite(save_path + '{}_heatmap.jpg'.format(taskname), bg)
   
     
 def heatmap_region(year, taskname=None, maprange=None, single=True, cluster=True, thres=5):  # get heatmap in specific region
@@ -536,9 +545,9 @@ def heatmap_region(year, taskname=None, maprange=None, single=True, cluster=True
 
     
 if __name__ == '__main__':
-    for year in range(2021, 2022):
-        img = getmap((95, 16, 97, 18), year, res=0.01, level=17)
-        cv2.imwrite(f'{year}_level17.png', img)
+    # for year in range(2021, 2022):
+    #     img = getmap((95, 16, 97, 18), year, res=0.01, level=17)
+    #     cv2.imwrite(f'{year}_level17.png', img)
 
     
     # csv_path = '/home/zhangkaifeng/YONGONCHICKENFISH/src/cluster_detection/utils/2021disappear_position.csv'

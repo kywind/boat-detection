@@ -106,7 +106,7 @@ def test(data,  # NOTE: this initial configuration set is used for train.py call
         names = data['names']
         # names = load_classes(opt.names)
     coco91class = coco80_to_coco91_class()
-    s = ('%20s' + '%12s' * 6) % ('Class', 'Images', 'Targets', 'IOU_thresh', 'P', 'R', 'mAP')
+    s = ('%20s' + '%12s' * 7) % ('Class', 'Images', 'Targets', 'IOU_thresh', 'P', 'R', 'mAP', 'Acc')
     
     p, r, f1, t0, t1 = 0., 0., 0., 0., 0.
     p5, r5, ap5, map5, f15, mf15 = 0., 0., 0., 0., 0., 0.
@@ -222,6 +222,16 @@ def test(data,  # NOTE: this initial configuration set is used for train.py call
     
     if len(stats):  # and stats[0].any():
         nt = np.bincount(stats[3].astype(np.int64), minlength=nc)  # number of targets per class
+        
+        conf = stats[1]
+        cls_pred = stats[2]
+        conf_detect = conf[conf > pr_thres]
+        cls_pred_detect = cls_pred[conf > pr_thres]
+        acc_detect = np.zeros(nt.shape)
+        for cls_id in range(nt.shape[0]):
+            cls_count = conf_detect[cls_pred_detect == cls_id].shape[0]
+            acc_detect[cls_id] = 1 - abs(cls_count - nt[cls_id]) / nt[cls_id]
+
         p, r, ap, f1, ap_class = ap_per_class(*stats, pr_thres)
         x = iouv.index(0.5) if 0.5 in iouv else 0 
         p5, r5, ap5, apm, f15, f1m = p[:, x], r[:, x], ap[:, x], ap.mean(1), f1[:, x], f1.mean(1)
@@ -234,8 +244,8 @@ def test(data,  # NOTE: this initial configuration set is used for train.py call
         for i in range(len(iouv)):
             pi, ri, api = p[:, i], r[:, i], ap[:, i]
             mp, mr, mapi = pi.mean(), ri.mean(), api.mean()  # average over all classes 
-            pf = '%20s' + '%12.3g' * 6  # print format
-            print(pf % ('all', seen, nt.sum(), iouv[i], mp, mr, mapi))
+            pf = '%20s' + '%12.3g' * 7  # print format
+            print(pf % ('all', seen, nt.sum(), iouv[i], mp, mr, mapi, acc_detect.mean()))
 
     # Print results per class
     if verbose and nc >= 1 and len(stats):
