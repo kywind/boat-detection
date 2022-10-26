@@ -545,10 +545,9 @@ def heatmap_region(year, taskname=None, maprange=None, single=True, cluster=True
 
     
 if __name__ == '__main__':
-    # for year in range(2021, 2022):
-    #     img = getmap((95, 16, 97, 18), year, res=0.01, level=17)
-    #     cv2.imwrite(f'{year}_level17.png', img)
-
+    for year in range(2021, 2022):
+        img = getmap((95, 16, 97, 18), year, res=0.01, level=17)
+        cv2.imwrite(f'{year}_level17.png', img)
     
     # csv_path = '/home/zhangkaifeng/YONGONCHICKENFISH/src/cluster_detection/utils/2021disappear_position.csv'
     # with open(csv_path) as f:
