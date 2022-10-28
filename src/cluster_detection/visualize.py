@@ -7,34 +7,34 @@ import numpy as np
 
 
 MAP_PATH_DICT = {
-    2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20101231/',
-    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20111231/',
-    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20121231/',
-    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20131231/',
-    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20141231/',
-    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20151231/',
-    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20161231/',
-    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20171231/',
-    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20181231/',
-    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20191231/',
-    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20201231/',
-    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20220531/'
-    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/2021_new/'
+    2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20101231/',
+    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20111231/',
+    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20121231/',
+    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20131231/',
+    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20141231/',
+    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20151231/',
+    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20161231/',
+    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20171231/',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20181231/',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20191231/',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20201231/',
+    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20220531/'
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/2021_new/'
 }
 TFW_PATH_DICT = {
-    2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20101231.txt',
-    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20111231.txt',
-    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20121231.txt',
-    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20131231.txt',
-    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20141231.txt',
-    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20151231.txt',
-    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20161231.txt',
-    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20171231.txt',
-    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20181231.txt',
-    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20191231.txt',
-    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20201231.txt',
-    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/20220531.txt'
-    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/tfw/2021_new.txt'
+    2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20101231.txt',
+    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20111231.txt',
+    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20121231.txt',
+    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20131231.txt',
+    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20141231.txt',
+    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20151231.txt',
+    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20161231.txt',
+    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20171231.txt',
+    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20181231.txt',
+    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20191231.txt',
+    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20201231.txt',
+    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20220531.txt'
+    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/2021_new.txt'
 }
 
 
@@ -134,7 +134,7 @@ def getmap(box, year, ratio=1, res=None, level=17, white=False):  # get satellit
         if not os.path.exists(map_path + name + '_Level_{}'.format(level) + img_type):
             continue
         if intersect((x0,y1,x1,y0), box):
-            print(name)
+            print(year, name)
             img = cv2.imread(map_path + name + '_Level_{}'.format(level) + img_type)
             if img is None:
                 continue
@@ -403,24 +403,29 @@ def comparison(years, tasknames=None, thres=5, res=0.0000107288):  # get mapcut 
         fdict.close()
   
         
-def heatmap_single(year, taskname=None, maptype='edge', x_pix=10000):  # generate heatmap of targets in whole region, using prepared map
+def heatmap_single(year, taskname=None, maptype='edge', x_pix=2000):  # generate heatmap of targets in whole region, using prepared map
     if maptype not in ['edge', 'map']:
         raise NotImplementedError
     if taskname is None:
         taskname = year
     x_min, x_max, y_min, y_max = (95., 97., 16., 18.) # if year != 2018 else (1.06e7, 1.08e7, 1.82e6, 2.02e6)
     res = (x_max - x_min) / x_pix
-    thres = 5
-    bg = cv2.imread('utils/{}_{}/{}.jpg'.format(maptype, x_pix, year))
+    bg = cv2.imread('utils/map/{}_level17_gray.png'.format(taskname))
     fin = open('./data/{}.txt'.format(taskname), 'r')
     data = fin.read().strip().split('\n')
     fin.close()
+    alpha = 0.25
+    # overlay = bg.copy()
     for item in data:
         q = item.split()
         x, y = eval(q[0]), eval(q[1])
         x_heat, y_heat = int((x-x_min)//res), int((y_max-y)//res)
-        bg = cv2.circle(bg, (x_heat, y_heat), 5, (0,0,255), -1)
-    cv2.imwrite('result/{}_heat_single.jpg'.format(taskname), bg)
+        # bg = cv2.circle(bg, (x_heat, y_heat), 10, (0,0,255), -1)
+        overlay = bg.copy()
+        overlay = cv2.circle(overlay, (x_heat, y_heat), 10, (0,0,255), -1)
+        bg = cv2.addWeighted(overlay, alpha, bg, 1 - alpha, 0)
+    # bg = cv2.addWeighted(overlay, alpha, bg, 1 - alpha, 0)
+    cv2.imwrite('result/{}_heat_single.png'.format(taskname), bg)
     
         
 def heatmap_cluster(year, taskname=None, maptype='edge', x_pix=10000):  # generate heatmap of clusters in whole region, using prepared map
@@ -545,9 +550,10 @@ def heatmap_region(year, taskname=None, maprange=None, single=True, cluster=True
 
     
 if __name__ == '__main__':
-    for year in range(2021, 2022):
-        img = getmap((95, 16, 97, 18), year, res=0.01, level=17)
-        cv2.imwrite(f'{year}_level17.png', img)
+    for year in range(2010, 2022):
+        heatmap_single(year)
+    #     img = getmap((95, 16, 97, 18), year, res=0.001, level=17)
+    #     cv2.imwrite(f'{year}_level17.png', img)
     
     # csv_path = '/home/zhangkaifeng/YONGONCHICKENFISH/src/cluster_detection/utils/2021disappear_position.csv'
     # with open(csv_path) as f:
