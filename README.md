@@ -121,9 +121,9 @@ farm_id, material, roof_size, whether_in_water, water_area, neighbor_ids
 
 ## 4 下载预训练模型
 
-- detection: https://drive.google.com/file/d/1LzqsnmJtg7VJG0CRmiwar33aR0nLbM0D/view?usp=sharing (Performance: see Table 1.)
+- detection: https://drive.google.com/file/d/1bVMyKAcRUJ-YsgJY1jI1S6I95gRfssNO/view?usp=sharing (Performance: see Table 1.)
 
-- roof segmentation: https://drive.google.com/file/d/1KS4dPEW8z6mPd6BcbWG8N49gOtzQXbKV/view?usp=sharing (Performance: see Table 2.)
+- roof segmentation: https://drive.google.com/file/d/1EoUoeDo0I16UViE0dFSAiVluCtiwAmER/view?usp=sharing (Performance: see Table 2.)
 
-- water segmentation: https://drive.google.com/file/d/1IXrB1jU02GUyL4bPoPIeuFE_LGjJG8FI/view?usp=sharing (Performance: see Table 2.)
+- water segmentation: https://drive.google.com/file/d/1hSrWMU-OgtVY_XfV-xgARKu2xj5JMSCC/view?usp=sharing (Performance: see Table 2.)
 
