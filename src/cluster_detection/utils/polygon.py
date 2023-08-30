@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import re
+import os
 
 
 def parse_polygon():
@@ -101,6 +102,7 @@ def generate_gray_map(year):
 
 
 def filter_data(year):
+    os.system(f'mkdir -p ../data/orig; cp ../data/{year}.txt ../data/orig/')
     with open(f'../data/orig/{year}.txt') as f:
         data = f.read().strip().split('\n')
     fout = open(f'../data/{year}.txt', 'w')
@@ -127,9 +129,10 @@ def filter_data(year):
 if __name__ == '__main__':
     # draw_polygon(2010)
     # generate_gray_map(2010)
-    for year in range(2010, 2022):
-        # generate_polygon_map(year)
-        # generate_white_map(year)
+    # for year in range(2010, 2022):
+    for year in range(20230827, 20230828):
+        generate_polygon_map(year)
+        generate_white_map(year)
         generate_gray_map(year)
-        # filter_data(year)
+        filter_data(year)
 

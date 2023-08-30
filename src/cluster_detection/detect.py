@@ -87,7 +87,8 @@ def detect(year):
     
 
 def main():
-    years = range(2010, 2022)
+    # years = range(2010, 2022)
+    years = range(20230827, 20230828)
     for year in years:
         detect(year)
         mapcut_single(year, size=200, annotate=False)

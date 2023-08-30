@@ -15,7 +15,7 @@
 # pip install pycocotools tensorboard
 
 ## 4
-# pip install opencv-python numpy matplotlib tqdm pillow gdown
+# pip install opencv-python numpy matplotlib tqdm pillow gdown pyyaml scipy
 
 ## 5 (cuda)
 # cd src/detection/third-party/mish-cuda
@@ -23,14 +23,43 @@
 # cd -
 
 ## 6
-# gdown https://drive.google.com/u/0/uc?id=1LzqsnmJtg7VJG0CRmiwar33aR0nLbM0D
+# gdown 1bVMyKAcRUJ-YsgJY1jI1S6I95gRfssNO
 # mkdir src/detection/weights
 # mv best_0829-no-intersect-608-new-new.pt src/detection/weights
-# gdown https://drive.google.com/u/0/uc?id=1KS4dPEW8z6mPd6BcbWG8N49gOtzQXbKV
-# gdown https://drive.google.com/u/0/uc?id=1IXrB1jU02GUyL4bPoPIeuFE_LGjJG8FI
+# gdown 1hSrWMU-OgtVY_XfV-xgARKu2xj5JMSCC
+# gdown 1EoUoeDo0I16UViE0dFSAiVluCtiwAmER
 # mv ckpt_830827.pt src/segmentation
 # mv ckpt_883.pt src/segmentation
 
 ## 7
 # mkdir data/
 # gsutil -m cp -r gs://satellite-yangon-level17/ data/
+
+
+## RUNNING
+
+## 0: change all the path dicts and all year/taskname iterators in python files manually
+
+## 1
+cd src/detection/preprocess
+python preprocess_detect.py
+cd ..
+bash scripts/detect.sh
+# rm -r ../cluster_detection/raw
+cp -r inference ../cluster_detection/raw
+
+## 2
+cd ../cluster_detection/utils
+python get_tfw.py
+cd ..
+python visualize.py  # generate whole map
+python nms.py
+cd utils
+python polygon.py  # generate polygon and filter data
+cd ..
+python visualize.py  # get heatmap (requires modified visualize.py)
+
+## 3 cluster
+python detect.py
+
+

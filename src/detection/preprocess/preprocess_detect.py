@@ -10,46 +10,49 @@ from water_detect import get_water
 
 
 MAP_PATH_DICT = {
-    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20101231/',
-    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20111231/',
-    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20121231/',
-    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20131231/',
-    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20141231/',
-    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20151231/',
-    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20161231/',
-    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20171231/',
-    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20181231/',
-    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20191231/',
-    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20201231/',
-    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20220531/'
+    # # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20101231/',
+    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20111231/',
+    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20121231/',
+    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20131231/',
+    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20141231/',
+    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20151231/',
+    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20161231/',
+    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20171231/',
+    # 2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20181231/',
+    # 2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20191231/',
+    # 2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20201231/',
+    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17/20220531/'
+    2023: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/data/2023_0827/'
 }
 BUFFER_PATH_DICT = {
-    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2010/',
-    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2011/',
-    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2012/',
-    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2013/',
-    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2014/',
-    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2015/',
-    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2016/',
-    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2017/',
-    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2018/',
-    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2019/',
-    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2020/',
-    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2021/'
+    # # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2010/',
+    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2011/',
+    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2012/',
+    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2013/',
+    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2014/',
+    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2015/',
+    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2016/',
+    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2017/',
+    # 2018: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2018/',
+    # 2019: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2019/',
+    # 2020: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2020/',
+    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2021/'
+    2023: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2023/'
 }
 BUFFER_NOWATER_PATH_DICT = {
-    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2010_nowater/',
-    2011: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2011_nowater/',
-    2012: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2012_nowater/',
-    2013: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2013_nowater/',
-    2014: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2014_nowater/',
-    2015: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2015_nowater/',
-    2016: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2016_nowater/',
-    2017: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2017_nowater/',
-    2018: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2018_nowater/',
-    2019: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2019_nowater/',
-    2020: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2020_nowater/',
-    2021: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2021_nowater/'
+    # # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2010_nowater/',
+    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2011_nowater/',
+    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2012_nowater/',
+    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2013_nowater/',
+    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2014_nowater/',
+    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2015_nowater/',
+    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2016_nowater/',
+    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2017_nowater/',
+    # 2018: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2018_nowater/',
+    # 2019: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2019_nowater/',
+    # 2020: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2020_nowater/',
+    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2021_nowater/'
+    2023: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection/detect_buffer_jpg_2023_nowater/'
 }
 
 
