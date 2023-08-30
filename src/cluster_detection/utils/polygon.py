@@ -102,7 +102,8 @@ def generate_gray_map(year):
 
 
 def filter_data(year):
-    os.system(f'mkdir -p ../data/orig; cp ../data/{year}.txt ../data/orig/')
+    if not os.path.exists('../data/orig/'):  # copy original data
+        os.system(f'mkdir -p ../data/orig; cp ../data/{year}.txt ../data/orig/')
     with open(f'../data/orig/{year}.txt') as f:
         data = f.read().strip().split('\n')
     fout = open(f'../data/{year}.txt', 'w')
@@ -111,6 +112,7 @@ def filter_data(year):
     poly = poly[poly > 0].reshape(-1, 2)
     poly = (poly * 10000).astype(np.int32)
     
+    orig_cnt = len(data)
     cnt = 0
     for i in range(len(data)):
         xmin, ymin, xmax, ymax = data[i].split()
@@ -123,7 +125,7 @@ def filter_data(year):
             fout.write('\n')
             cnt += 1
     fout.close()
-    print(year, cnt)
+    print(year, orig_cnt, cnt)
             
 
 if __name__ == '__main__':

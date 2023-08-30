@@ -59,7 +59,13 @@ python polygon.py  # generate polygon and filter data
 cd ..
 python visualize.py  # get heatmap (requires modified visualize.py)
 
+## 2.5 v5 heatmap with real map
+cd ../v5_heatmap
+gdown 1btTfCOAW5unYjnEpw4jOXgoCvlfjlWn8  # yangon.png
+gdown 1uiQZf-bCmftg2sCbsCi2nxL13mRrP6xz  # yangon_green.png
+
 ## 3 cluster
 python detect.py
+
 
 
