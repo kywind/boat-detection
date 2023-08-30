@@ -3,14 +3,16 @@ import numpy as np
 import os
 
 
-poly = np.load('src/cluster_detection/utils/yangon_polygon.npy')[2]
+poly = np.load('../cluster_detection/utils/yangon_polygon.npy')[2]
 poly = poly[poly > 0].reshape(-1, 2)
 poly = (poly * 10000).astype(np.int32)
 
-det_result  = 'v4_result/result_10-22_yangon/detection_result'
+# det_result  = 'v4_result/result_10-22_yangon/detection_result'
+det_result = '../cluster_detection/data/orig/'
 
 locs = dict()
-for year in range(2010, 2021):
+# for year in range(2010, 2021):
+for year in range(20230827, 20230828):
     loc_list = []
     det_result_path = os.path.join(det_result, str(year) + '.txt')
     with open(det_result_path, 'r') as f:
@@ -25,6 +27,8 @@ for year in range(2010, 2021):
 
 file_1 = 'yangon.png'
 file_2 = 'yangon_green.png'
+
+os.makedirs('result/', exist_ok=True)
 
 keypoints_1 = [ 
     (82, 624), # left-upper, (x, y)
@@ -94,7 +98,8 @@ for i in range(2):
         for loc in loc_list:
             x_min, x_max, y_min, y_max = corner_range
             assert not (loc[0] < x_min or loc[0] > x_max or loc[1] < y_min or loc[1] > y_max), print(loc, corner_range)
-            if cv2.pointPolygonTest(poly, (int(loc[0] * 10000), int(loc[1] * 10000)), False) >= 0:  # inside
+            # if cv2.pointPolygonTest(poly, (int(loc[0] * 10000), int(loc[1] * 10000)), False) >= 0:  # inside
+            if True:  # don't test yangon polygon
                 x_pix = (loc[0] - x_min) / (x_max - x_min) * (corner_list[2][0] - corner_list[0][0]) + corner_list[0][0]
                 y_pix = (loc[1] - y_max) / (y_min - y_max) * (corner_list[1][1] - corner_list[0][1]) + corner_list[0][1]
                 pix_loc = (int(x_pix), int(y_pix))
@@ -115,6 +120,6 @@ for i in range(2):
                     overlay = cv2.circle(overlay, pix_loc, radius, bgr, -1)
                     img = cv2.addWeighted(overlay, alpha, img, 1 - alpha, 0)
 
-        cv2.imwrite(f'{i+1}_{year}.png', img)
+        cv2.imwrite(f'result/{i+1}_{year}.png', img)
         print(f'finished file {i+1}, year {year}')
 
