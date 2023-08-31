@@ -102,11 +102,11 @@ def generate_gray_map(year):
 
 
 def filter_data(year):
-    if not os.path.exists('../data/orig/'):  # copy original data
-        os.system(f'mkdir -p ../data/orig; cp ../data/{year}.txt ../data/orig/')
-    with open(f'../data/orig/{year}.txt') as f:
+    if not os.path.exists('../data/filtered/'):
+        os.system('mkdir -p ../data/filtered/')
+    with open(f'../data/{year}.txt') as f:
         data = f.read().strip().split('\n')
-    fout = open(f'../data/{year}.txt', 'w')
+    fout = open(f'../data/filtered/{year}.txt', 'w')
     
     poly = np.load('yangon_polygon.npy')[2]
     poly = poly[poly > 0].reshape(-1, 2)

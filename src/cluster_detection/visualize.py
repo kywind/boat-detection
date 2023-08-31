@@ -414,7 +414,7 @@ def heatmap_single(year, taskname=None, maptype='edge', x_pix=2000):  # generate
     x_min, x_max, y_min, y_max = (95., 97., 16., 18.) # if year != 2018 else (1.06e7, 1.08e7, 1.82e6, 2.02e6)
     res = (x_max - x_min) / x_pix
     bg = cv2.imread('utils/map/{}_level17_gray.png'.format(taskname))
-    fin = open('./data/{}.txt'.format(taskname), 'r')
+    fin = open('./data/filtered/{}.txt'.format(taskname), 'r')
     data = fin.read().strip().split('\n')
     fin.close()
     alpha = 0.25
