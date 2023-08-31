@@ -92,10 +92,10 @@ def main():
     for year in years:
         detect(year)
         mapcut_single(year, size=200, annotate=False)
-        mapcut_single(year, size=500, annotate=False)
-        mapcut_single(year, size=1000, annotate=False)  
-        mapcut_cluster(year)
-    comparison(years)
+        # mapcut_single(year, size=500, annotate=False)
+        # mapcut_single(year, size=1000, annotate=False)  
+        # mapcut_cluster(year)
+    # comparison(years)
 
 
 if __name__ == '__main__':

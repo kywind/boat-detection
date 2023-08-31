@@ -4,7 +4,38 @@ import random
 import cv2
 import numpy as np
 
-
+MAP_PATH_DICT = {
+    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20101231/',
+    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20111231/',
+    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20121231/',
+    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20131231/',
+    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20141231/',
+    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20151231/',
+    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20161231/',
+    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20171231/',
+    # 2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20181231/',
+    # 2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20191231/',
+    # 2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20201231/',
+    # # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20220531/'
+    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/2021_new/'
+    20230827: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/data/2023_0827/'
+}
+TFW_PATH_DICT = {
+    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20101231.txt',
+    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20111231.txt',
+    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20121231.txt',
+    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20131231.txt',
+    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20141231.txt',
+    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20151231.txt',
+    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20161231.txt',
+    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20171231.txt',
+    # 2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20181231.txt',
+    # 2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20191231.txt',
+    # 2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20201231.txt',
+    # # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20220531.txt'
+    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/2021_new.txt'
+    20230827: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/data/tfw/20230827.txt',
+}
 
 
 def intersect(box1, box2):  # judge if two boxes intersect
@@ -15,8 +46,10 @@ def getmap(box, year, ratio=1, res=None):  # get satellite map for any rectangle
     channel = 3
     img_type = '.tif'
     img_size_bound = (6000,4000)
-    map_path = '/data/zkf/rawimages/yangon_{}/'.format(year)
-    tfw_path = '../cluster/utils/tfw.txt'
+    # map_path = '/home/zhangkaifeng/projects/YONGONCHICKENFISH/data/{}/'.format(year)
+    # tfw_path = '../cluster/utils/tfw.txt'
+    map_path = MAP_PATH_DICT[year]
+    tfw_path = TFW_PATH_DICT[year]
     resolution = 0.0000107288 * ratio if not res else res
         
     ftfw = open(tfw_path, 'r')
@@ -65,10 +98,11 @@ def getmap(box, year, ratio=1, res=None):  # get satellite map for any rectangle
     return res
 
 
-def make_roof_buffer():
-    years = [2010, 2011, 2012, 2013, 2014, 2015, 2016]
+def make_roof_buffer(years):
+    # years = [2010, 2011, 2012, 2013, 2014, 2015, 2016]
+    # years = range(20230827, 20230828)
     for year in years:
-        filename = '../cluster/data/{}.txt'.format(year)
+        filename = '../cluster_detection/data/{}.txt'.format(year)
         outdir = 'detect_buffer_roof_{}/'.format(year)
         os.makedirs(outdir, exist_ok=True)
 
@@ -99,10 +133,11 @@ def make_roof_buffer():
             cnt += 1
 
 
-def make_water_buffer():
-    years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018]
+def make_water_buffer(years):
+    # years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018]
+    # years = range(20230827, 20230828)
     for year in years:
-        filename = '../cluster/data/{}.txt'.format(year)
+        filename = '../cluster_detection/data/{}.txt'.format(year)
         outdir = 'detect_buffer_water_{}/'.format(year)
         os.makedirs(outdir, exist_ok=True)
 
@@ -143,5 +178,7 @@ def make_water_buffer():
             # f.close()
             cnt += 1
 
-
-make_water_buffer()
+if __name__ == '__main__':
+    years = range(20230827, 20230828)
+    make_roof_buffer(years)
+    make_water_buffer(years)

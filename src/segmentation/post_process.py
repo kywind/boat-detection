@@ -4,11 +4,13 @@ import numpy as np
 import cv2
 
 # for each instance
-for year in range(2010, 2022):
-    roof_in_path = 'inference/inference_roof_{}/'.format(year)
-    water_in_path = 'inference/inference_water_{}/'.format(year)
-    water_meta_path = 'inference/{}_water_meta/'.format(year)
+# for year in range(2010, 2022):
+for year in range(20230827, 20230828):
+    roof_in_path = 'inference_roof_{}/'.format(year)
+    water_in_path = 'inference_water_{}/'.format(year)
+    water_meta_path = '{}_water_meta/'.format(year)
     files = [f for f in os.listdir(roof_in_path) if f.endswith('npy')]
+    os.makedirs('result/', exist_ok=True)
     fout = open('result/seg_res_{}.txt'.format(year), 'w')
     for file_id in range(len(files)):
         res = 0.0000107288

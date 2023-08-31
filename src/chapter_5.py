@@ -23,14 +23,15 @@ def getclusters(filename, edge=0):   # get cluster arrays from a file
     
     return ranges, sizes, contents
 
-total_area = [0] * len(range(2010, 2022))
-total_roof_area = [0] * len(range(2010, 2022))
-average_size = [0] * len(range(2010, 2022))
-roof_mean_area = [0] * len(range(2010, 2022))
-thatch_percent = [0] * len(range(2010, 2022))
-zinc_percent = [0] * len(range(2010, 2022))
+year_range = range(20230827, 20230828)
+total_area = [0] * len(year_range)
+total_roof_area = [0] * len(year_range)
+average_size = [0] * len(year_range)
+roof_mean_area = [0] * len(year_range)
+thatch_percent = [0] * len(year_range)
+zinc_percent = [0] * len(year_range)
 
-for year_id, year in enumerate(range(2010, 2022)):
+for year_id, year in enumerate(year_range):
         
     x_pix = 10000
     taskname = year
@@ -83,12 +84,16 @@ for year_id, year in enumerate(range(2010, 2022)):
         average_size[year_id] += int(sizes[i])
     average_size[year_id] /= len(sizes)
 
+    print(cnt)
 
     single_in_dir = 'cluster_detection/result/{}_single_200/'.format(year)
     cluster_in_file = 'cluster_detection/result/{}_集群信息.txt'.format(year)
     seg_in_file = 'segmentation/result/seg_res_{}.txt'.format(year)
-    # out_file = 'result_v3_{}.csv'.format(year)
-    # fout = open(out_file, 'w')
+    out_file = 'result_v3_{}.csv'.format(year)
+    stat_out_file = 'result_v3_{}_stat.txt'.format(year)
+    fout = open(out_file, 'w')
+    stat_fout = open(stat_out_file, 'w')
+    fout.write('idx, xmin, ymin, xmax, ymax, cluster_id, cluster_size, cluster_xmin, cluster_ymin, cluster_xmax, cluster_ymax, material, roof_area, water_area, adjacent\n')
 
     single_in_files = [f for f in os.listdir(single_in_dir) if f.endswith('txt')]
     with open(seg_in_file) as f:
@@ -132,7 +137,7 @@ for year_id, year in enumerate(range(2010, 2022)):
         cluster_id, cluster_size, cluster_xmin, cluster_ymin, cluster_xmax, cluster_ymax = \
             eval(line[0]), eval(line[1]), eval(line[2]), eval(line[3]), eval(line[4]), eval(line[5])
         
-        
+
         for i in range(cluster_size):
             obj_id = eval(line[6+i])
             material = material_list[obj_id]
@@ -145,36 +150,55 @@ for year_id, year in enumerate(range(2010, 2022)):
                 roof_total_area += roof_area
                 roof_area_count += 1
 
+            if obj_id in cluster_dict.keys(): raise ValueError
+            cluster_dict[obj_id] = (cluster_id, cluster_size, cluster_xmin, cluster_ymin, cluster_xmax, cluster_ymax)
+
+            # print(cluster_dict)
+
     total_roof_area[year_id] = roof_total_area
     roof_mean_area[year_id] = roof_total_area / roof_area_count
     thatch_percent[year_id] = thatch_count / material_count
     zinc_percent[year_id] = zinc_count / material_count
 
-
-            # if obj_id in cluster_dict.keys(): raise ValueError
-            # cluster_dict[obj_id] = (cluster_id, cluster_size, cluster_xmin, cluster_ymin, cluster_xmax, cluster_ymax)
-
-    # print(cluster_dict)
+    stat_fout.write('year: {}\ntotal_area: {}\ntotal_roof_area: {}\naverage_size: {}\nroof_mean_area: {}\nthatch_percent: {}\nzinc_percent: {}\n\n'
+        .format(year, total_area[year_id], total_roof_area[year_id], average_size[year_id], roof_mean_area[year_id], thatch_percent[year_id], zinc_percent[year_id]))
 
 
-        # if idx in cluster_dict.keys():
-        #     cluster_id, cluster_size, cluster_xmin, cluster_ymin, cluster_xmax, cluster_ymax = cluster_dict[idx]
-        #     fout.write('{},{} {} {} {},{},{},{} {} {} {},{},{},{},{}\n'.format(
-        #         idx, xmin, ymin, xmax, ymax, cluster_id, cluster_size, cluster_xmin, cluster_ymin, cluster_xmax,
-        #         cluster_ymax, material, roof_area, water_area, adjacent
-        #     ))
-        # else:
-        #     fout.write('{},{} {} {} {},{},{},{},{},{},{},{}\n'.format(
-        #         idx, xmin, ymin, xmax, ymax, 'none', 'none', 'none',
-        #         material, roof_area, water_area, adjacent
-        #     ))
-    # fout.close()
-    print(cnt)
+    ## iterate everything again, generate csv
+    for idx in range(len(single_in_files)):
+        single_in = single_in_dir + '{}.txt'.format(idx)
+        seg_in = seg_in_data[idx]
+
+        with open(single_in) as f:
+            single_in_data = f.read().strip().split()
+        
+        xmin, ymin, xmax, ymax = eval(single_in_data[0]), eval(single_in_data[1]), eval(single_in_data[2]), eval(single_in_data[3])
+        
+        seg_line = seg_in_data[idx].split(',')
+        seg_idx, material, roof_area, water_area, adjacent = eval(seg_line[0]), eval(seg_line[1]), eval(seg_line[2]), eval(seg_line[3]), seg_line[4]
+        material_list[idx] = material
+        roof_area_list[idx] = roof_area
+
+        if idx in cluster_dict.keys():
+            cluster_id, cluster_size, cluster_xmin, cluster_ymin, cluster_xmax, cluster_ymax = cluster_dict[idx]
+            fout.write('{},{} {} {} {},{},{},{} {} {} {},{},{},{},{}\n'.format(
+                idx, xmin, ymin, xmax, ymax, cluster_id, cluster_size, cluster_xmin, cluster_ymin, cluster_xmax,
+                cluster_ymax, material, roof_area, water_area, adjacent
+            ))
+        else:
+            fout.write('{},{} {} {} {},{},{},{},{},{},{},{}\n'.format(
+                idx, xmin, ymin, xmax, ymax, 'none', 'none', 'none',
+                material, roof_area, water_area, adjacent
+            ))
+    fout.close()
+    stat_fout.close()
 
 
-print(total_area)
-print(total_roof_area)
-print(average_size)
-print(roof_mean_area)
-print(thatch_percent)
-print(zinc_percent)
+print('total_area:', total_area)
+print('total_roof_area:', total_roof_area)
+print('average_size:', average_size)
+print('roof_mean_area:', roof_mean_area)
+print('thatch_percent:', thatch_percent)
+print('zinc_percent:', zinc_percent)
+
+

@@ -4,5 +4,6 @@ vis_*
 detect_buffer*/
 inference*/
 result/
+*_water_meta/
 old/
 *.pt

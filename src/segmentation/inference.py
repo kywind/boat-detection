@@ -40,6 +40,7 @@ def main():
     parser.add_argument('--no-cuda', action='store_true', default=False)
     parser.add_argument('--dry-run', action='store_true', default=False)
     parser.add_argument('--seed', type=int, default=1)
+    parser.add_argument('--year', type=str, default='test')
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
 
@@ -55,13 +56,16 @@ def main():
                        'shuffle': False}
         test_kwargs.update(cuda_kwargs)
     
-    for year in range(2016, 2022):
+    # for year in range(2016, 2022):
+    if True:
+        year = args.year
         if args.task == 'water':
-            test_dataset = InfDataset_water('data/{}_single_500/'.format(year))
+            # test_dataset = InfDataset_water('data/{}_single_500/'.format(year))
+            test_dataset = InfDataset_water('detect_buffer_water_{}'.format(year))
             args.num_classes = 2
         else:
             # test_dataset = InfDataset('data/{}_single_200/'.format(year))
-            test_dataset = InfDataset('../cluster_detection/')
+            test_dataset = InfDataset('detect_buffer_roof_{}'.format(year))
             args.num_classes = 3
 
         test_loader = torch.utils.data.DataLoader(test_dataset, **test_kwargs)

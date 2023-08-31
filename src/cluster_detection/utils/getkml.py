@@ -2,7 +2,8 @@ import os
 
 edge = 0
 
-for year in range(2010, 2022):
+# for year in range(2010, 2022):
+for year in range(20230827, 20230828):
     fin = open(f'../data/{year}.txt')
     data = fin.read().strip().split('\n')
     fin.close()
@@ -28,7 +29,7 @@ for year in range(2010, 2022):
     head += '</Folder>\n \
 </Document></kml>'
 
-    fout = open(f'{year}.kml', 'w')
+    fout = open(f'../result/{year}.kml', 'w')
     fout.write(head)
     fout.close()
   

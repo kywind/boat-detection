@@ -9,11 +9,11 @@ def intersect(box1, box2):  # judge if two boxes intersect
     return not (box1[2] < box2[0] or box1[0] > box2[2] or box1[3] < box2[1] or box1[1] > box2[3])
 
 
-def make_water_buffer():
-    years = range(2010, 2022)
+def make_water_buffer(years):
+    # years = range(2010, 2022)
     for year in years:
         filename = '../cluster_detection/data/{}.txt'.format(year)
-        outdir = 'inference/{}_water_meta/'.format(year)
+        outdir = '{}_water_meta/'.format(year)
         os.makedirs(outdir, exist_ok=True)
 
         w, h = 500, 500
@@ -25,7 +25,7 @@ def make_water_buffer():
         aux = range(len(data))
         cnt = 0
         for i in aux:
-            print(year, i, data[i])
+            # print(year, i, data[i])
             xmin, ymin, xmax, ymax = data[i].split()
             xmin, ymin, xmax, ymax = eval(xmin), eval(ymin), eval(xmax), eval(ymax)
             x, y = (xmin + xmax) / 2, (ymin + ymax) / 2
@@ -44,7 +44,7 @@ def make_water_buffer():
                 xmin2, ymin2, xmax2, ymax2 = data[j].split()
                 xmin2, ymin2, xmax2, ymax2 = eval(xmin2), eval(ymin2), eval(xmax2), eval(ymax2)
                 if intersect(box, (xmin2, ymin2, xmax2, ymax2)):
-                    print(xmin2, ymin2, xmax2, ymax2)
+                    # print(xmin2, ymin2, xmax2, ymax2)
                     xmid2 = (xmin2+xmax2)/2
                     ymid2 = (ymin2+ymax2)/2
                     x2 = int((xmid2-box[0])/res)
@@ -54,4 +54,4 @@ def make_water_buffer():
             cnt += 1
 
 
-make_water_buffer()
+make_water_buffer(years=range(20230827, 20230828))

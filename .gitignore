@@ -4,6 +4,6 @@
 etc/
 data/
 result/
-v4_result/
-v5_result/
+v*_result/
+*.zip
 !files/*
