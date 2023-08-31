@@ -4,6 +4,8 @@
 
 - 参考的PyTorch+YOLOv4实现：https://github.com/WongKinYiu/PyTorch_YOLOv4
 
+## 2023.8.30 Update
+对于给定17级含tfw文件卫星地图的鸡舍检测问题，本项目代码最新的使用全流程在install.sh中。下文中的内容部分已经不再适用，请注意。
 
 ## 1 模型
 
