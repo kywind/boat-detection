@@ -1,111 +1,89 @@
 # Yangon Chickenfish
 
-本项目是一个基于YOLOv4的卫星图像目标体识别与集群检测模型。
+This is a satellite image object detection and clustering model based on YOLOv4 (https://github.com/WongKinYiu/PyTorch_YOLOv4).
 
-- 参考的PyTorch+YOLOv4实现：https://github.com/WongKinYiu/PyTorch_YOLOv4
 
-## 2023.8.30 Update
-对于给定17级含tfw文件卫星地图的鸡舍检测问题，本项目代码最新的使用全流程在install.sh中。下文中的内容部分已经不再适用，请注意。
+## 1 Model
 
-## 1 模型
-
-### 1.1 工作流程
+### 1.1 Pipeline overview
 
 ![method](files/method.png)
 
-如图所示。输入某地理范围内所有卫星图片后，首先全部裁剪成固定大小，通过检测模型，检出所有鸡鱼农场。然后，进行以下的统计：(1)计数，(2)重新以检出农场为中心裁剪卫星图片，通过分割模型，分割出农场与鱼塘的轮廓，计算总面积，(3)通过集群检测算法，统计农场集群。
+Shown in this figure, with the satellite images as input, we first crop the images into fixed sizes and detect all chicken farms using an object detection model. Then, we do the following post-processing steps: (1) counting; (2) re-cropping the satellite images aroung chicken houses and segment the chicken house buildings and fish ponds, calculating their total area sizes; (2) detect clusters using a cluster detection algorithm.
 
-### 1.2 算法
+### 1.2 Algorithm 
 
-- detection: 基于YOLOv4。预测所有农场，结果格式为所有农场的经纬度位置，以及bounding box的长宽。可从头训练，支持水体检测预处理，支持基于经纬度的NMS去重，可自动计算anchor。
+- detection: Based on YOLOv4. Trained with annotated data to output axis-aligned bounding boxes on images countaining chicken farms. When counting, bounding boxes are transformed into spatial locations (latitude and longtitude), and farms that are detected more than once in overlapping satellite images are removed. Corresponding code dir: ```src/detection```
 
-- segmentation：基于U-net。预测图片中属于水体的像素，以及图片中属于农场屋顶的像素，其中对于后者，同时预测农场的材料，材料分为草质与金属质两类。
+- segmentation：Based on U-net. Trained with annotated data to output per-pixel likelihood of belonging to fish ponds or rooftops of chicken houses. For each rooftop，the model also predicts one of two possible rooftop materials, thatch and zinc. Corresponding code dir: ```src/segmentation```
 
-- cluster detection：相互之间距离不超过距离D的农场被认为属于同一集群。
+- cluster detection：Farms with distance less than a threshold D are considered to be within a cluster. We use a search algorithm to find all non-overlapping clusters. Corresponding code dir: ```src/cluster_detection```
 
-### 1.3 模型表现
-
-![performance](files/performance.png)
-
-- Table 1: detection模型表现，由精确率、召回率、平均精确率表示。表格列举了三个不同IoU阈值下的表现。IoU阈值为预测的bounding box与真实的bounding box之间的最大交-并比。
-
-- Table 2: segmentation模型表现。由预测结果和真实结果间的交-并比表示。
-
-- Table 3: 2010～2016年，模型对仰光周围100km半径内农场总个数的计数结果。
-
-更详细的模型相关信息，请参考files/report.pdf。
+- statistics: After the previous steps, we calculate the total statistics (mean rooftop area, percentage of zinc and thatch roofs, mean cluster size, etc). Corresponding code dir: ```src/cluster_detection```
 
 
-## 2 安装
+## 2 Installation
+
+### 2.1 python environment
 
 ```
 pip install -r requirements.txt
 ```
-- 安装mish-cuda：https://github.com/thomasbrandon/mish-cuda
+- For detection model, it is required to install mish-cuda：https://github.com/thomasbrandon/mish-cuda
 
 
-## 3 运行
+### 2.2 pretrained models
 
-### 3.1 数据准备
+- detection (save to ```src/detection/weights```): https://drive.google.com/file/d/1bVMyKAcRUJ-YsgJY1jI1S6I95gRfssNO/view?usp=sharing
 
-- src/detection/images: 裁剪为固定大小后的卫星图片
-- src/detection/annotations: 对应的json标注文件
+- roof segmentation (save to ```src/segmentation```): https://drive.google.com/file/d/1EoUoeDo0I16UViE0dFSAiVluCtiwAmER/view?usp=sharing
 
-预处理训练数据：
+- water segmentation (save to ```src/segmentation```): https://drive.google.com/file/d/1hSrWMU-OgtVY_XfV-xgARKu2xj5JMSCC/view?usp=sharing
+
+
+## 3 Running the code
+
+**Note:** We cannot provide the satellite images in this codebase due to its enormous size. We do provide the detection results in ```src/cluster_detection/data``` and segmentation results in ```src/segmentation/result```. To test the code with only these provided results, only run the scripts that are marked as "ready".
+
+### 3.1 Data preparation
+
+- src/detection/images: satellite images after cropping to a fixed size
+- src/detection/annotations: corresponding json annotation file
+
+Preprocess training data:
 ```
 cd src/detection/;
 python preprocess/preprocess_train.py;
 ```
 
 ### 3.2 detection
-训练：
+Training:
 ```
 cd src/detection/;
 bash scripts/train.sh;
 ```
 
-测试：
+Testing: 
 ```
 cd src/detection/;
 bash scripts/test.sh;
 ```
 
-预测：
+Inference:
 ```
 cd src/detection/;
 python preprocess/preprocess_detect.py;
 bash scripts/detect.sh;
 ```
 
-### 3.5 cluster detection
-detection的结果需先放至 src/cluster_detection/raw/ 目录下。
-```
-cd src/cluster_detection/;
-python nms.py;
-python detect.py;
-```
-
-输出格式：
-```
-...
-cluster 
-k xmin ymin xmax ymax
-xmin_1 ymin_1 xmax_1 ymax_1
-xmin_2 ymin_2 xmax_2 ymax_2
-...
-xmin_k ymin_k xmax_k ymax_k
-cluster
-...
-```
-
-### 3.6 segmentation
-训练：
+### 3.3 segmentation
+Training:
 ```
 cd src/segmentation/;
 python main.py;
 ```
 
-预测：
+Inference:
 ```
 cd src/segmentation/;
 python make_buffer.py;
@@ -113,19 +91,25 @@ python inference.py;
 python post_process.py;
 ```
 
-输出格式：
+### 3.4 cluster detection
+detection results must be copied to the ```src/cluster_detection/raw``` directory.
+
+Preprocessing:
 ```
-...
-farm_id, material, roof_size, whether_in_water, water_area, neighbor_ids
-...
+cd src/cluster_detection/;
+python nms.py;  # remove farms detected more than once
 ```
 
+Detect **(ready)**:
+```
+python detect.py;  # detect clusters
+```
 
-## 4 下载预训练模型
+### 3.5 stats
 
-- detection: https://drive.google.com/file/d/1bVMyKAcRUJ-YsgJY1jI1S6I95gRfssNO/view?usp=sharing (Performance: see Table 1.)
-
-- roof segmentation: https://drive.google.com/file/d/1EoUoeDo0I16UViE0dFSAiVluCtiwAmER/view?usp=sharing (Performance: see Table 2.)
-
-- water segmentation: https://drive.google.com/file/d/1hSrWMU-OgtVY_XfV-xgARKu2xj5JMSCC/view?usp=sharing (Performance: see Table 2.)
+Calculate statistics **(ready)**:
+```
+cd src/stats;
+python get_stats.py
+```
 

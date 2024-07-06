@@ -5,3 +5,4 @@ utils/map_*
 utils/map/*.jpg
 utils/map/*.png
 tmp/
+!data/

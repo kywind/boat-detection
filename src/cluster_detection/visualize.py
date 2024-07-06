@@ -192,18 +192,22 @@ def mapcut_single(year, taskname=None, size=100, annotate=True, num=None):  # ra
             delta_x = int((xmax - x) / 0.0000107288)
             delta_y = int((ymax - y) / 0.0000107288)
             # (delta_x > 0 and delta_y > 0)
-            img = getmap(box, year)
-            mid_x = int(img.shape[0] / 2)
-            mid_y = int(img.shape[1] / 2)
-            if annotate:
-                img = cv2.rectangle(img, (mid_x-delta_x, mid_y-delta_y), (mid_x+delta_x, mid_y+delta_y), (0, 0, 255), 1)
-            cv2.imwrite(savepath + '{}.jpg'.format(cnt), img)
+            try:
+                img = getmap(box, year)
+                mid_x = int(img.shape[0] / 2)
+                mid_y = int(img.shape[1] / 2)
+                if annotate:
+                    img = cv2.rectangle(img, (mid_x-delta_x, mid_y-delta_y), (mid_x+delta_x, mid_y+delta_y), (0, 0, 255), 1)
+                cv2.imwrite(savepath + '{}.jpg'.format(cnt), img)
+            except:
+                # print('cannot get map for {}'.format(data[i]))
+                continue
             f = open(savepath + '{}.txt'.format(cnt), 'w')
             f.write('{} {} {} {}'.format(xmin, ymin, xmax, ymax))
             f.close()
             cnt += 1
-                        
-                
+
+
 def annotate_single(year, taskname=None, num=50):  # random pick 50 original (608x608) images and annotate predictions
     if taskname is None:
         taskname = year
@@ -414,7 +418,7 @@ def heatmap_single(year, taskname=None, maptype='edge', x_pix=2000):  # generate
     x_min, x_max, y_min, y_max = (95., 97., 16., 18.) # if year != 2018 else (1.06e7, 1.08e7, 1.82e6, 2.02e6)
     res = (x_max - x_min) / x_pix
     bg = cv2.imread('utils/map/{}_level17_gray.png'.format(taskname))
-    fin = open('./data/filtered/{}.txt'.format(taskname), 'r')
+    fin = open('./data/filtered/{}.txt'.format(taskname), 'r')  # for visualization effects, we filter our data based on the yangon amp
     data = fin.read().strip().split('\n')
     fin.close()
     alpha = 0.25

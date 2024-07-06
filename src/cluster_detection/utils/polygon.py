@@ -101,7 +101,7 @@ def generate_gray_map(year):
     cv2.imwrite(get_img_path(year, 'gray'), poly)
 
 
-def filter_data(year):
+def filter_data(year):  # filter data based on the yangon mmap
     if not os.path.exists('../data/filtered/'):
         os.system('mkdir -p ../data/filtered/')
     with open(f'../data/{year}.txt') as f:

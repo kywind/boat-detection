@@ -3,7 +3,7 @@ import sys
 from visualize import *
 
 
-def dfs(data, vis, i, thresh):  # 给定一个目标，递归搜索和它在同一个集群内的所有目标
+def dfs(data, vis, i, thresh):  # recursively search targets that are in the same cluster as the given target
 
     def dist(a, b):
         x_a = (a[0] + a[2]) / 2
@@ -49,18 +49,18 @@ def detect(year):
         for j in range(len(data)):
             if vis[j] == 1:
                 choice.append((data[j][0], data[j][1], data[j][2], data[j][3], j))
-                min_x = min(min_x, data[j][0])  #最小经度
-                min_y = min(min_y, data[j][1])  #最小纬度
+                min_x = min(min_x, data[j][0])  # minimum longitude
+                min_y = min(min_y, data[j][1])  # minimum latitude
                 group[j] = p
         if len(choice) >= size_thresh:
             print('Found size {} cluster.'.format(len(choice)))
             result.append((min_x+min_y*1000, choice))
         p += 1
 
-    result.sort(key=lambda x:x[0])  #按最小纬度+最小经度的字典序升序排序
+    result.sort(key=lambda x:x[0])
 
     fout = open(save_path + '{}.txt'.format(task), 'w')
-    fdetail = open(save_path + '{}_集群信息.txt'.format(task), 'w')
+    fdetail = open(save_path + '{}_cluster_info.txt'.format(task), 'w')
     mem = [0] * len(data)
 
     for idx, (_, cluster) in enumerate(result):
@@ -72,16 +72,16 @@ def detect(year):
             ymax = max(ymax, item[3])          
         fout.write('cluster\n')
         fout.write('{} {} {} {} {}\n'.format(len(cluster), xmin, ymin, xmax, ymax))   
-        fdetail.write('集群{}：大小{}，经纬度范围{} {} {} {}，包含目标编号：'.format(idx, len(cluster), xmin, ymin, xmax, ymax))
+        fdetail.write('cluster {}: size {}, range {} {} {} {}, containing target id: '.format(idx, len(cluster), xmin, ymin, xmax, ymax))
         for item in cluster:
             fout.write('{} {} {} {}\n'.format(item[0], item[1], item[2], item[3]))   
-            fdetail.write('{}号 '.format(item[4])) 
+            fdetail.write('{} '.format(item[4])) 
             mem[item[4]] = 1
         fdetail.write('\n')
-    fdetail.write('不在集群中的目标编号：')
+    fdetail.write('Target ids not in any clusters: ')
     for k in range(len(data)):
         if mem[k] == 0:
-            fdetail.write('{}号 '.format(k))
+            fdetail.write('{} '.format(k))
     fout.close()
     fdetail.close()
     

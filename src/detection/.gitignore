@@ -2,7 +2,7 @@ detect_buffer_*/
 data*/
 inference/
 runs/
-weights/
+*.pt
 vis_temp/
 build/
 dist/

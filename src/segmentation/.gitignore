@@ -3,7 +3,7 @@ vis/
 vis_*
 detect_buffer*/
 inference*/
-result/
+!result/
 *_water_meta/
 old/
 *.pt

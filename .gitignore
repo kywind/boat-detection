@@ -7,3 +7,4 @@ result/
 v*_result/
 *.zip
 !files/*
+unused/
