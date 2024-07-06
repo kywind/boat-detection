@@ -19,7 +19,7 @@ Shown in this figure, with the satellite images as input, we first crop the imag
 
 - cluster detection：Farms with distance less than a threshold D are considered to be within a cluster. We use a search algorithm to find all non-overlapping clusters. Corresponding code dir: ```src/cluster_detection```
 
-- statistics: After the previous steps, we calculate the total statistics (mean rooftop area, percentage of zinc and thatch roofs, mean cluster size, etc). Corresponding code dir: ```src/cluster_detection```
+- statistics: After the previous steps, we calculate the total statistics (mean rooftop area, percentage of zinc and thatch roofs, mean cluster size, etc). Corresponding code dir: ```src/stats```
 
 
 ## 2 Installation
@@ -43,7 +43,7 @@ pip install -r requirements.txt
 
 ## 3 Running the code
 
-**Note:** We cannot provide the satellite images in this codebase due to its enormous size. We do provide the detection results in ```src/cluster_detection/data``` and segmentation results in ```src/segmentation/result```. To test the code with only these provided results, only run the scripts that are marked as "ready".
+**Note:** We cannot provide the satellite images in this codebase due to its enormous size. We do provide the detection results in ```src/cluster_detection/data``` and segmentation results in ```src/segmentation/result```. To test the code with only these provided results, only run the scripts that are marked as "**ready**".
 
 ### 3.1 Data preparation
 
@@ -92,7 +92,7 @@ python post_process.py;
 ```
 
 ### 3.4 cluster detection
-detection results must be copied to the ```src/cluster_detection/raw``` directory.
+Detection results must be copied to the ```src/cluster_detection/raw``` directory.
 
 Preprocessing:
 ```
@@ -100,7 +100,7 @@ cd src/cluster_detection/;
 python nms.py;  # remove farms detected more than once
 ```
 
-Detect **(ready)**:
+Detection **(ready)**:
 ```
 python detect.py;  # detect clusters
 ```
