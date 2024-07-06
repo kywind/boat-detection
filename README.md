@@ -15,7 +15,7 @@ Shown in this figure, with the satellite images as input, we first crop the imag
 
 - detection: Based on YOLOv4. Trained with annotated data to output axis-aligned bounding boxes on images countaining chicken farms. When counting, bounding boxes are transformed into spatial locations (latitude and longtitude), and farms that are detected more than once in overlapping satellite images are removed. Corresponding code dir: ```src/detection```
 
-- segmentation：Based on U-net. Trained with annotated data to output per-pixel likelihood of belonging to fish ponds or rooftops of chicken houses. For each rooftop，the model also predicts one of two possible rooftop materials, thatch and zinc. Corresponding code dir: ```src/segmentation```
+- segmentation：Based on U-net. Trained with annotated data to output per-pixel likelihood of belonging to fish ponds or rooftops of chicken houses. For each rooftop, the model also predicts one of two possible rooftop materials, thatch and zinc. Corresponding code dir: ```src/segmentation```
 
 - cluster detection：Farms with distance less than a threshold D are considered to be within a cluster. We use a search algorithm to find all non-overlapping clusters. Corresponding code dir: ```src/cluster_detection```
 
@@ -34,11 +34,11 @@ pip install -r requirements.txt
 
 ### 2.2 pretrained models
 
-- detection (save to ```src/detection/weights```): https://drive.google.com/file/d/1bVMyKAcRUJ-YsgJY1jI1S6I95gRfssNO/view?usp=sharing
+- detection (save to ```src/detection/weights```): https://drive.google.com/file/d/1Q-f7G0RcclqtNnQvZWNNypB46WxNtJqP/view?usp=sharing
 
-- roof segmentation (save to ```src/segmentation```): https://drive.google.com/file/d/1EoUoeDo0I16UViE0dFSAiVluCtiwAmER/view?usp=sharing
+- roof segmentation (save to ```src/segmentation```): https://drive.google.com/file/d/1OlL5JLIGY696CUjfJ0liwzNPkuaFdDY2/view?usp=sharing
 
-- water segmentation (save to ```src/segmentation```): https://drive.google.com/file/d/1hSrWMU-OgtVY_XfV-xgARKu2xj5JMSCC/view?usp=sharing
+- water segmentation (save to ```src/segmentation```): https://drive.google.com/file/d/1bztV57OPKeotXNvXCoO43Qws6x8gRpyb/view?usp=sharing
 
 
 ## 3 Running the code

@@ -142,7 +142,7 @@ def detect():
                     raise StopIteration
 
             # Save results (image with detections)
-            if save_img and has_vis_obj:  # flag: has prediction  ###########################################
+            if save_img and has_vis_obj:  # flag: has prediction
                 if dataset.mode == 'images':
                     os.makedirs(opt.vis_path, exist_ok=True)
                     cv2.imwrite(opt.vis_path + '{}.jpg'.format(vis_cnt), im0)

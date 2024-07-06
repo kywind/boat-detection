@@ -93,7 +93,7 @@ def hull_intersect(hull1, hull2):  # judge if two convex hulls intersect
     for p1, p2 in zip(hull1, np.concatenate((hull1[1:], hull1[:1]), axis=0)):
         for q1, q2 in zip(hull2, np.concatenate((hull2[1:], hull2[:1]), axis=0)):
             # print(p1, p2, q1, q2)
-            if segment_intersect(p1[0], p2[0], q1[0], q2[0]):  #消除一个多余的维度
+            if segment_intersect(p1[0], p2[0], q1[0], q2[0]):
                 return True
     return False
 
@@ -339,14 +339,14 @@ def comparison(years, tasknames=None, thres=5, res=0.0000107288):  # get mapcut 
             hull_new_info = [[hull_new.copy(), year, len(targets), i]]
             
             flag = 1
-            while flag:  #找到所有和hullnew有相交的hull
+            while flag:  # find all hulls that intersect with the new hull
                 for k in range(len(hull_all)):
-                    hull0 = hull_all[k][0]  #hull0:已经被记录的hull
+                    hull0 = hull_all[k][0]  # hull0: the hull that has been recorded
                     hull0_info = hull_all[k][1]
                     if hull_intersect(hull_new, hull0):
                         hull_new = cv2.convexHull(np.concatenate((hull_new, hull0), axis=0).reshape(-1, 2))
                         hull_new_info.extend(hull0_info)
-                        hull_all.pop(k)  #将hull0删除，准备用hullnew替代
+                        hull_all.pop(k)  # delete hull0 and be ready to replace by hull1
                         break
                 else:
                     flag = 0
@@ -375,11 +375,11 @@ def comparison(years, tasknames=None, thres=5, res=0.0000107288):  # get mapcut 
         print(box)
         os.makedirs(savepath + '{}/'.format(cnt), exist_ok=True)
         
-        fout = open(savepath + '{}/注释.txt'.format(cnt), 'w')
-        fout.write('经纬度范围： {} {} {} {}'.format(xmin, ymin, xmax, ymax))
+        fout = open(savepath + '{}/anno.txt'.format(cnt), 'w')
+        fout.write('Range: {} {} {} {}'.format(xmin, ymin, xmax, ymax))
         for year in years:
-            fout.write('\n年份： {}\n'.format(year))
-            fout.write('本年度集群编号：')
+            fout.write('\nYear: {}\n'.format(year))
+            fout.write('Cluster ids in this year: ')
             for (subhull, y, num, idx) in hull_all[i][1]:
                 if year == y:
                     # fout.write('{}\n'.format(num))
@@ -402,11 +402,11 @@ def comparison(years, tasknames=None, thres=5, res=0.0000107288):  # get mapcut 
                         y0 = int((ymax-subhull[j][0][1]) // res)
                         y1 = int((ymax-subhull[(j+1)%len(subhull)][0][1]) // res)
                         img = cv2.line(img, (x0, y0), (x1, y1), (0,255,255), 1)
-            cv2.imwrite(savepath + '{}/{}_框选.jpg'.format(cnt, year), img)
+            cv2.imwrite(savepath + '{}/{}_selected.jpg'.format(cnt, year), img)
 
-        fdict = open(savepath + '集群归属.txt', 'w')
+        fdict = open(savepath + 'cluster_belongings.txt', 'w')
         for key in index_dict.keys():
-            fdict.write('年份：{}，集群编号：{}，归属文件夹：{}\n'.format(key[0], key[1], index_dict[key]))
+            fdict.write('year: {}, cluster id: {}, belonging folder: {}\n'.format(key[0], key[1], index_dict[key]))
         fdict.close()
   
         
