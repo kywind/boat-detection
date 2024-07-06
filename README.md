@@ -5,13 +5,13 @@ This is a satellite image object detection and clustering model based on YOLOv4 
 
 ## 1 Model
 
-### 1.1 Pipeline overview
+### 1.1 pipeline overview
 
 ![method](files/method.png)
 
-Shown in this figure, with the satellite images as input, we first crop the images into fixed sizes and detect all chicken farms using an object detection model. Then, we do the following post-processing steps: (1) counting; (2) re-cropping the satellite images aroung chicken houses and segment the chicken house buildings and fish ponds, calculating their total area sizes; (2) detect clusters using a cluster detection algorithm.
+With the satellite images as input, we first crop the images into fixed sizes and detect all chicken farms using an object detection model. Then, we do the following post-processing steps: (1) counting; (2) re-cropping the satellite images aroung chicken houses and segment the chicken house buildings and fish ponds, calculating their total area sizes; (2) detect clusters using a cluster detection algorithm.
 
-### 1.2 Algorithm 
+### 1.2 algorithm 
 
 - detection: Based on YOLOv4. Trained with annotated data to output axis-aligned bounding boxes on images countaining chicken farms. When counting, bounding boxes are transformed into spatial locations (latitude and longtitude), and farms that are detected more than once in overlapping satellite images are removed. Corresponding code dir: ```src/detection```
 
@@ -45,7 +45,7 @@ pip install -r requirements.txt
 
 **Note:** We cannot provide the satellite images in this codebase due to its enormous size. We do provide the detection results in ```src/cluster_detection/data``` and segmentation results in ```src/segmentation/result```. To test the code with only these provided results, only run the scripts that are marked as "**ready**".
 
-### 3.1 Data preparation
+### 3.1 data preparation
 
 - src/detection/images: satellite images after cropping to a fixed size
 - src/detection/annotations: corresponding json annotation file
