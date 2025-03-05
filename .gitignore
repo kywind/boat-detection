@@ -3,6 +3,7 @@
 .DS_Store
 etc/
 data/
+!src/detection-yolov11/ultralytics/data
 result/
 v*_result/
 *.zip

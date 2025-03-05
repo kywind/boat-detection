@@ -31,6 +31,11 @@ pip install -r requirements.txt
 ```
 - For detection model, it is required to install mish-cuda：https://github.com/thomasbrandon/mish-cuda
 
+### 2.1.1 New: YOLOv11
+
+```
+pip install ultralytics
+```
 
 ### 2.2 pretrained models
 
@@ -57,6 +62,17 @@ python preprocess/preprocess_train.py;
 ```
 
 ### 3.2 detection
+
+### 3.2.1 New: YOLOv11
+
+Training:
+```
+cd src/detection-yolov11/experiments;
+python train.py;
+```
+
+### 3.2.2
+
 Training:
 ```
 cd src/detection/;

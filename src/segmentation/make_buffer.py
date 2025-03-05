@@ -5,36 +5,36 @@ import cv2
 import numpy as np
 
 MAP_PATH_DICT = {
-    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20101231/',
-    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20111231/',
-    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20121231/',
-    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20131231/',
-    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20141231/',
-    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20151231/',
-    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20161231/',
-    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20171231/',
-    # 2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20181231/',
-    # 2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20191231/',
-    # 2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20201231/',
-    # # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20220531/'
-    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/2021_new/'
-    20230827: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/data/2023_0827/'
+    # 2010: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20101231/',
+    # 2011: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20111231/',
+    # 2012: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20121231/',
+    # 2013: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20131231/',
+    # 2014: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20141231/',
+    # 2015: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20151231/',
+    # 2016: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20161231/',
+    # 2017: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20171231/',
+    # 2018: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20181231/',
+    # 2019: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20191231/',
+    # 2020: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20201231/',
+    # # 2021: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20220531/'
+    # 2021: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/2021_new/'
+    20230827: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/20230827/'
 }
 TFW_PATH_DICT = {
-    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20101231.txt',
-    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20111231.txt',
-    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20121231.txt',
-    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20131231.txt',
-    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20141231.txt',
-    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20151231.txt',
-    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20161231.txt',
-    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20171231.txt',
-    # 2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20181231.txt',
-    # 2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20191231.txt',
-    # 2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20201231.txt',
-    # # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20220531.txt'
-    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/2021_new.txt'
-    20230827: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/data/tfw/20230827.txt',
+    # 2010: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20101231.txt',
+    # 2011: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20111231.txt',
+    # 2012: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20121231.txt',
+    # 2013: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20131231.txt',
+    # 2014: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20141231.txt',
+    # 2015: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20151231.txt',
+    # 2016: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20161231.txt',
+    # 2017: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20171231.txt',
+    # 2018: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20181231.txt',
+    # 2019: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20191231.txt',
+    # 2020: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20201231.txt',
+    # # 2021: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20220531.txt'
+    # 2021: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/2021_new.txt'
+    20230827: '~/projects/YONGONCHICKENFISH/sec/detection-yolo11/log/tfw/20230827.txt',
 }
 
 

@@ -7,3 +7,5 @@ inference*/
 *_water_meta/
 old/
 *.pt
+weights/
+log/

@@ -7,36 +7,34 @@ import numpy as np
 
 
 MAP_PATH_DICT = {
-    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20101231/',
-    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20111231/',
-    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20121231/',
-    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20131231/',
-    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20141231/',
-    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20151231/',
-    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20161231/',
-    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20171231/',
-    # 2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20181231/',
-    # 2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20191231/',
-    # 2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20201231/',
-    # # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/20220531/'
-    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/2021_new/'
-    20230827: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/data/2023_0827/'
+    2010: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20101231/',
+    2011: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20111231/',
+    2012: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20121231/',
+    2013: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20131231/',
+    2014: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20141231/',
+    2015: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20151231/',
+    2016: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20161231/',
+    2017: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20171231/',
+    2018: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20181231/',
+    2019: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20191231/',
+    2020: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20201231/',
+    2021: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/2021_new/',
+    2023: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/20230827/'
 }
 TFW_PATH_DICT = {
-    # 2010: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20101231.txt',
-    # 2011: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20111231.txt',
-    # 2012: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20121231.txt',
-    # 2013: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20131231.txt',
-    # 2014: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20141231.txt',
-    # 2015: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20151231.txt',
-    # 2016: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20161231.txt',
-    # 2017: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20171231.txt',
-    # 2018: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20181231.txt',
-    # 2019: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20191231.txt',
-    # 2020: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20201231.txt',
-    # # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/20220531.txt'
-    # 2021: '/home/zhangkaifeng/YONGONCHICKENFISH/data/satellite-yangon-level17-v2/tfw/2021_new.txt'
-    20230827: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/data/tfw/20230827.txt',
+    2010: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20101231.txt',
+    2011: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20111231.txt',
+    2012: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20121231.txt',
+    2013: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20131231.txt',
+    2014: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20141231.txt',
+    2015: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20151231.txt',
+    2016: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20161231.txt',
+    2017: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20171231.txt',
+    2018: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20181231.txt',
+    2019: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20191231.txt',
+    2020: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20201231.txt',
+    2021: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/2021_new.txt',
+    2023: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/tfw/20230827.txt',
 }
 
 
@@ -558,12 +556,12 @@ def heatmap_region(year, taskname=None, maprange=None, single=True, cluster=True
     
 if __name__ == '__main__':
     # for year in range(2010, 2022):
-    for year in MAP_PATH_DICT.keys():
-        os.makedirs('result/', exist_ok=True)
-        heatmap_single(year)
-        # img = getmap((95, 16, 97, 18), year, res=0.001, level=17)
-        # os.makedirs('utils/map/', exist_ok=True)
-        # cv2.imwrite(f'utils/map/{year}_level17.png', img)
+    # for year in MAP_PATH_DICT.keys():
+    #     os.makedirs('result/', exist_ok=True)
+    #     # heatmap_single(year)
+    #     img = getmap((95, 16, 97, 18), year, res=0.001, level=17)
+    #     # os.makedirs('utils/map/', exist_ok=True)
+    #     cv2.imwrite(f'utils/map/{year}_level17.png', img)
     
     # csv_path = '/home/zhangkaifeng/YONGONCHICKENFISH/src/cluster_detection/utils/2021disappear_position.csv'
     # with open(csv_path) as f:
@@ -594,5 +592,46 @@ if __name__ == '__main__':
     #             fout.write(f'{i+1} {year}\n')
     #             break
     # fout.close()
-                
-                
+    
+
+    dir_list = {
+        2010: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2010_water_meta',
+        2011: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2011_water_meta',
+        2012: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2012_water_meta',
+        2013: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2013_water_meta',
+        2014: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2014_water_meta',
+        2015: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2015_water_meta',
+        2016: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2016_water_meta',
+        2017: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2017_water_meta',
+        2018: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2018_water_meta',
+        2019: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2019_water_meta',
+        2020: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2020_water_meta',
+        2021: '/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/segmentation_inference/inference/2021_water_meta',
+    }
+
+    for year, dr in dir_list.items():
+
+        for i in range(len(os.listdir(dr))):
+
+            meta_file = f'{dr}/{i}.txt'
+
+            with open(meta_file) as f:
+                data = f.read()
+            
+            pos = data.split('\n')[0].split(' ')
+            x = (float(pos[0]) + float(pos[2])) / 2
+            y = (float(pos[1]) + float(pos[3])) / 2
+            print(x, y)
+
+            x1, y1, x2, y2 = x - 0.0000107288 * 50, y - 0.0000107288 * 50, x + 0.0000107288 * 50, y + 0.0000107288 * 50
+            img = getmap((x1, y1, x2, y2), year)
+
+            os.makedirs(f'/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/roof_{year}', exist_ok=True)
+            cv2.imwrite(f'/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/roof_{year}/{i}.png', img)
+
+
+            x1, y1, x2, y2 = x - 0.0000107288 * 200, y - 0.0000107288 * 200, x + 0.0000107288 * 200, y + 0.0000107288 * 200
+            img = getmap((x1, y1, x2, y2), year)
+
+            os.makedirs(f'/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/water_{year}', exist_ok=True)
+            cv2.imwrite(f'/home/zhangkaifeng/projects/YONGONCHICKENFISH/src/detection-yolov11/log/water_{year}/{i}.png', img)

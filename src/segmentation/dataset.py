@@ -291,7 +291,7 @@ class TestDataset_water(Dataset):
 
         self.im_names = sorted(os.listdir(im_root))
         data_size = len(self.im_names)
-        self.im_names = self.im_names[int(0.8 * data_size):]
+        self.im_names = self.im_names# [int(0.8 * data_size):]
         self.ims = []
         self.gts = []
         # self.centers = []
@@ -300,13 +300,13 @@ class TestDataset_water(Dataset):
             im_name = self.im_names[idx][:-4]
             im_path = path.join(im_root, im_name + '.jpg')
             gt_path = path.join(gt_root, im_name + '.npy')
-            poly_path = path.join(poly_root, im_name + '.json')
+            # poly_path = path.join(poly_root, im_name + '.json')
 
             im = np.asarray(Image.open(im_path).convert('RGB'))
             im = np.pad(im, ((self.pad, self.pad), (self.pad, self.pad), (0, 0)))
             gt = np.load(gt_path)
             gt = np.pad(gt, self.pad)
-            _, center_list = read_points(poly_path)  # vertices and centers of each polygon
+            # _, center_list = read_points(poly_path)  # vertices and centers of each polygon
 
 
             im = transforms.ToTensor()(im)
@@ -338,7 +338,8 @@ class TestDataset_water(Dataset):
         im_rgb = self.ims[idx]
         gt = self.gts[idx]
 
-        im = transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))(im_rgb)
+        # im = transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))(im_rgb)
+        im = im_rgb
         gt = gt.long().squeeze(0)
 
         return im_rgb.float(), im, gt
@@ -353,7 +354,7 @@ class TestDataset(Dataset):
 
         self.im_names = sorted(os.listdir(im_root))
         data_size = len(self.im_names)
-        self.im_names = self.im_names[int(0.8 * data_size):]
+        self.im_names = self.im_names# [int(0.8 * data_size):]
         self.ims = []
         self.gts = []
         # self.centers = []
@@ -362,35 +363,37 @@ class TestDataset(Dataset):
             im_name = self.im_names[idx][:-4]
             im_path = path.join(im_root, im_name + '.jpg')
             gt_path = path.join(gt_root, im_name + '.npy')
-            poly_path = path.join(poly_root, im_name + '.json')
+            # poly_path = path.join(poly_root, im_name + '.json')
 
             im = np.asarray(Image.open(im_path).convert('RGB'))
             im = np.pad(im, ((self.pad, self.pad), (self.pad, self.pad), (0, 0)))
             gt = np.load(gt_path)
             gt = np.pad(gt, self.pad)
-            _, center_list = read_points(poly_path)  # vertices and centers of each polygon
+            # _, center_list = read_points(poly_path)  # vertices and centers of each polygon
 
 
             im = transforms.ToTensor()(im)
             gt = transforms.ToTensor()(gt)
 
 
-            scale = 2
-            shift_x, shift_y = 0, 0
-            H, W = 224, 224
+            # scale = 2
+            # shift_x, shift_y = 0, 0
+            # H, W = 224, 224
 
-            h, w = int(H / 2 / scale), int(W / 2 / scale)  # half height and width to crop on im
-            for choice in range(len(center_list)):
-                c = center_list[choice]
-                c[0], c[1] = c[0] + shift_x + self.pad, c[1] + shift_y + self.pad
+            # h, w = int(H / 2 / scale), int(W / 2 / scale)  # half height and width to crop on im
+            # for choice in range(len(center_list)):
+            #     c = center_list[choice]
+            #     c[0], c[1] = c[0] + shift_x + self.pad, c[1] + shift_y + self.pad
 
-                xmin, ymin = int(c[0] - w), int(c[1] - h)
+            #     xmin, ymin = int(c[0] - w), int(c[1] - h)
 
-                im_crop = transforms.functional.resized_crop(im, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.BILINEAR)
-                gt_crop = transforms.functional.resized_crop(gt, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.NEAREST)
+            #     im_crop = transforms.functional.resized_crop(im, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.BILINEAR)
+            #     gt_crop = transforms.functional.resized_crop(gt, ymin, xmin, 2*h, 2*w, size=(H, W), interpolation=InterpolationMode.NEAREST)
 
-                self.ims.append(im_crop)
-                self.gts.append(gt_crop)
+            #     self.ims.append(im_crop)
+            #     self.gts.append(gt_crop)
+            self.ims.append(im)
+            self.gts.append(gt)
 
 
     def __len__(self):
@@ -400,7 +403,8 @@ class TestDataset(Dataset):
         im_rgb = self.ims[idx]
         gt = self.gts[idx]
 
-        im = transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))(im_rgb)
+        # im = transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))(im_rgb)
+        im = im_rgb
         gt = gt.long().squeeze(0)
 
         return im_rgb.float(), im, gt
