@@ -60,7 +60,7 @@ for year in range(2010, 2022):
     locs[year] = loc_list
 
 
-file_1 = 'input.pdf'
+file_1 = 'template.pdf'
 
 os.makedirs('result/', exist_ok=True)
 
@@ -151,7 +151,7 @@ for i in range(1):
         # print(circle_positions)
         circle_positions = np.array(circle_positions)
         np.savetxt(f'result/{year}.csv', circle_positions, fmt='%f', delimiter=',')
-        draw_circles_on_pdf("input.pdf", f"result/{year}.pdf", circle_positions)
+        draw_circles_on_pdf(files[i], f"result/{year}.pdf", circle_positions)
 
         # cv2.imwrite(f'result/{i+1}_{year}.png', img)
         # print(f'finished file {i+1}, year {year}')
